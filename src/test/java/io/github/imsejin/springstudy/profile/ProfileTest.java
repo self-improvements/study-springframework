@@ -14,8 +14,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @RequiredArgsConstructor
+// Must be specified as 'test'.
 @ActiveProfiles("test")
-        // Must be specified as 'test'.
 class ProfileTest {
 
     private final ApplicationContext context;
