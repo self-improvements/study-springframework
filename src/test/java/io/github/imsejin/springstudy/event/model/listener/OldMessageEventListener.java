@@ -20,7 +20,7 @@ public class OldMessageEventListener implements ApplicationListener<OldMessageEv
 
     @Override
     public void onApplicationEvent(OldMessageEvent event) {
-        log.info("[{}] / Listened event: {}", Thread.currentThread().getName(), event.getMessage());
+        log.info("[{}] / Listened OldMessageEvent: {}", Thread.currentThread().getName(), event.getMessage());
     }
 
 }

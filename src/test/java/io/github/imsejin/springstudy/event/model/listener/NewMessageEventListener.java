@@ -26,24 +26,24 @@ public class NewMessageEventListener {
     @EventListener
     @Order(Ordered.HIGHEST_PRECEDENCE)
     public void handle(OldMessageEvent event) {
-        log.info("[{}] / Listened old event: {}", Thread.currentThread().getName(), event.getMessage());
+        log.info("[{}] / Listened OldMessageEvent: {}", Thread.currentThread().getName(), event.getMessage());
     }
 
     @EventListener
     public void handle3(NewMessageEvent event) {
-        log.info("[{}] / Listened new event at handle3: {}", Thread.currentThread().getName(), event.getMessage());
+        log.info("[{}] / Listened NewMessageEvent at handle3: {}", Thread.currentThread().getName(), event.getMessage());
     }
 
     @EventListener
     @Order(Ordered.HIGHEST_PRECEDENCE + 1)
     public void handle2(NewMessageEvent event) {
-        log.info("[{}] / Listened new event at handle2: {}", Thread.currentThread().getName(), event.getMessage());
+        log.info("[{}] / Listened NewMessageEvent at handle2: {}", Thread.currentThread().getName(), event.getMessage());
     }
 
     @EventListener
     @Order(Ordered.HIGHEST_PRECEDENCE)
     public void handle1(NewMessageEvent event) {
-        log.info("[{}] / Listened new event at handle1: {}", Thread.currentThread().getName(), event.getMessage());
+        log.info("[{}] / Listened NewMessageEvent at handle1: {}", Thread.currentThread().getName(), event.getMessage());
     }
 
 }

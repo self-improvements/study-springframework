@@ -18,11 +18,16 @@ class EventPublisherTest {
 
     @Test
     void test() {
-        log.info("Published event!");
-
-        publisher.publishEvent(new OldMessageEvent(this, "Hello Old World!"));
-        publisher.publishEvent(new NewMessageEvent(this, "Hello New World!"));
+        log.info("========== Published String Event!");
         publisher.publishEvent("Hello Stringified World!");
+
+        log.info("========== Published OldMessageEvent!");
+        publisher.publishEvent(new OldMessageEvent(this, "Hello Old World!"));
+
+        log.info("========== Published NewMessageEvent!");
+        publisher.publishEvent(new NewMessageEvent(this, "Hello New World!"));
+
+        log.info("========== Finished publishing events!");
     }
 
 }

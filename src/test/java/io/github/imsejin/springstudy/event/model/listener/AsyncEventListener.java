@@ -16,13 +16,13 @@ public class AsyncEventListener {
     @Async
     @EventListener
     public void handle1(String event) {
-        log.info("[{}] / Listened new event at handle1: {}", Thread.currentThread().getName(), event);
+        log.info("[{}] / Listened String Event at handle1: {}", Thread.currentThread().getName(), event);
     }
 
     @Async
     @EventListener
     public void handle2(String event) {
-        log.info("[{}] / Listened new event at handle2: {}", Thread.currentThread().getName(), event);
+        log.info("[{}] / Listened String Event at handle2: {}", Thread.currentThread().getName(), event);
     }
 
 }
