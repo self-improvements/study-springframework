@@ -9,7 +9,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationEventPublisher;
 
 @Slf4j
-
 @SpringBootTest
 class EventPublisherTest {
 
