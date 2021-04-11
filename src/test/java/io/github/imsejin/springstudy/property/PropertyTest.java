@@ -36,7 +36,7 @@ class PropertyTest {
      * }</pre>
      *
      * <p> {@code JVM System Properties}(e.g. -Dkey="value")로 지정한 property가
-     * properties file보다 우선순위가 높다.
+     * properties file(application.properties)보다 우선순위가 높다.
      */
     @Test
     void test() {
