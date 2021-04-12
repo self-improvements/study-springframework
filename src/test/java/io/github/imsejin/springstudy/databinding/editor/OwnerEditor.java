@@ -1,7 +1,9 @@
-package io.github.imsejin.springstudy.editor;
+package io.github.imsejin.springstudy.databinding.editor;
 
-import io.github.imsejin.springstudy.model.Book;
+import io.github.imsejin.springstudy.databinding.model.Owner;
+import org.springframework.validation.DataBinder;
 
+import java.beans.PropertyEditor;
 import java.beans.PropertyEditorSupport;
 
 /**
@@ -13,19 +15,21 @@ import java.beans.PropertyEditorSupport;
  *
  * <p> thread scope한 bean으로 등록한다면 그나마 안전하나 애초에
  * bean으로 등록하지 않는 것을 권장함.
+ *
+ * <p> {@link DataBinder}가 {@link PropertyEditor}들을 이용해 data binding을 진행한다.
  */
-public class BookEditor extends PropertyEditorSupport {
+public class OwnerEditor extends PropertyEditorSupport {
 
     @Override
     public String getAsText() {
-        Book book = (Book) getValue(); // #2. 저장한 값을 가져온다.
-        return book.getId().toString();
+        Owner owner = (Owner) getValue(); // #2. 저장한 값을 가져온다.
+        return owner.getId().toString();
     }
 
     @Override
     public void setAsText(String text) throws IllegalArgumentException {
-        Book book = new Book(Integer.parseInt(text));
-        setValue(book); // #1. 값을 저장한다.
+        Owner owner = new Owner(Integer.parseInt(text));
+        setValue(owner); // #1. 값을 저장한다.
     }
 
 }
