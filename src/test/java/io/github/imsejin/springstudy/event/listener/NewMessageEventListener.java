@@ -1,7 +1,7 @@
-package io.github.imsejin.springstudy.event.model.listener;
+package io.github.imsejin.springstudy.event.listener;
 
-import io.github.imsejin.springstudy.event.model.object.NewMessageEvent;
-import io.github.imsejin.springstudy.event.model.object.OldMessageEvent;
+import io.github.imsejin.springstudy.event.model.NewMessageEvent;
+import io.github.imsejin.springstudy.event.model.OldMessageEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.EventListener;

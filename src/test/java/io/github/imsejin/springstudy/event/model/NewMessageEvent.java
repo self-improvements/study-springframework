@@ -1,4 +1,4 @@
-package io.github.imsejin.springstudy.event.model.object;
+package io.github.imsejin.springstudy.event.model;
 
 import lombok.Getter;
 import org.springframework.context.ApplicationListener;

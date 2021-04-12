@@ -1,4 +1,4 @@
-package io.github.imsejin.springstudy.validation.model.validator;
+package io.github.imsejin.springstudy.validation.validator;
 
 import io.github.imsejin.springstudy.validation.model.Fruit;
 import org.springframework.validation.Errors;

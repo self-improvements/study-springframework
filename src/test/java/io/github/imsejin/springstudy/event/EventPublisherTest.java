@@ -1,7 +1,7 @@
 package io.github.imsejin.springstudy.event;
 
-import io.github.imsejin.springstudy.event.model.object.NewMessageEvent;
-import io.github.imsejin.springstudy.event.model.object.OldMessageEvent;
+import io.github.imsejin.springstudy.event.model.NewMessageEvent;
+import io.github.imsejin.springstudy.event.model.OldMessageEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

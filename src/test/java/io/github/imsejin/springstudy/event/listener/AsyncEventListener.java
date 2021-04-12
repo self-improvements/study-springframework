@@ -1,4 +1,4 @@
-package io.github.imsejin.springstudy.event.model.listener;
+package io.github.imsejin.springstudy.event.listener;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;

@@ -1,7 +1,7 @@
 package io.github.imsejin.springstudy.validation;
 
 import io.github.imsejin.springstudy.validation.model.Fruit;
-import io.github.imsejin.springstudy.validation.model.validator.FruitValidator;
+import io.github.imsejin.springstudy.validation.validator.FruitValidator;
 import io.github.imsejin.springstudy.validation.model.User;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
