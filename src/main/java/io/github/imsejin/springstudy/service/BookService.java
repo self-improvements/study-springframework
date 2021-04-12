@@ -17,7 +17,7 @@ public class BookService {
 
     @PostConstruct
     public void whenConstructed() {
-        System.out.printf("========= = Successfully constructed: %s\n", this);
+        System.out.printf("========== Successfully constructed: %s\n", this);
     }
 
     public Book publish(Book book) {
