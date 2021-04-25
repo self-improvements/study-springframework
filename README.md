@@ -1,4 +1,4 @@
-# study-spring-framework-code
+# study-springframework-core
 
 <p align="center">
     <img alt="logo" src="./assets/cover.jpg" width="75%">
