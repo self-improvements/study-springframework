@@ -48,7 +48,7 @@ class DataBindingTest {
     }
 
     @Test
-    @DisplayName("org.springframework.core.convert.converter")
+    @DisplayName("org.springframework.core.convert.converter.Converter")
     void testConverter() throws Exception {
         // given
         String name = "Crime and Punishment";
