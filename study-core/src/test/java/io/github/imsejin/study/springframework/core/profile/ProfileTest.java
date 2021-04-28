@@ -14,12 +14,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @RequiredArgsConstructor
-// Must be specified as 'test'.
 @ActiveProfiles("test")
 class ProfileTest {
 
     private final ApplicationContext context;
 
+    // This can be loaded when active profile is 'test'.
     @Autowired
     private Repository<Cloth> clothRepository;
 

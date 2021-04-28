@@ -1,8 +1,8 @@
 package io.github.imsejin.study.springframework.core.validation;
 
 import io.github.imsejin.study.springframework.core.validation.model.Fruit;
-import io.github.imsejin.study.springframework.core.validation.validator.FruitValidator;
 import io.github.imsejin.study.springframework.core.validation.model.User;
+import io.github.imsejin.study.springframework.core.validation.validator.FruitValidator;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

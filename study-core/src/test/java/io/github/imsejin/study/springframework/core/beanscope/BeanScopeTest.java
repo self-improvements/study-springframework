@@ -87,7 +87,7 @@ class BeanScopeTest {
      * 따라서 이 메서드들을 호출할 때는 target class의 instance를 생성하지 않는다.
      */
     @Test
-    @DisplayName("Bean의 Scope 설정")
+    @DisplayName("Various bean scope")
     void beanScopes() {
         // Singleton.
         assertThat(this.singleton)

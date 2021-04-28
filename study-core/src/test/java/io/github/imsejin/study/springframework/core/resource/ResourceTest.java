@@ -26,7 +26,7 @@ class ResourceTest {
 
     /**
      * ClassPath 또는 ServletContext를 기준으로 resource를 읽어오는 API가 없다.
-     * {@link Resource}는 {@link java.net.URL}을 추상화한 위의 needs를 해결했다.
+     * {@link Resource}는 {@link URL}을 추상화한 위의 needs를 해결했다.
      *
      * <p> {@link Resource}의 여러 구현체 중 일부만 살펴보면,
      * <dl>
