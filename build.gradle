@@ -21,12 +21,15 @@ repositories {
 
 dependencies {
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-aop'
+
     /*
     spring-boot v2.3 이후로 "spring-boot-starter-web", "spring-boot-starter-webflux"가
     "spring-boot-starter-validation"를 포함하지 않는다.
     (https://www.youtube.com/watch?v=cP8TwMV4LjE&t=70s)
      */
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation'
+
     testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test'
     compileOnly group: 'org.projectlombok', name: 'lombok'
     annotationProcessor group: 'org.projectlombok', name: 'lombok'
