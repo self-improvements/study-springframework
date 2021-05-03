@@ -13,11 +13,12 @@ plugins {
     id 'eclipse' // optional (to generate Eclipse project files)
 }
 
+group = 'io.github.imsejin.study.springframework'
+version = '0.1.0'
+sourceCompatibility = 11
+targetCompatibility = 11
+
 allprojects {
-    group = 'io.github.imsejin.study.springframework'
-    version = '0.1.0'
-    sourceCompatibility = 11
-    targetCompatibility = 11
     [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
     apply plugin: 'java'
@@ -35,7 +36,13 @@ allprojects {
 }
 
 subprojects {
+    group = 'io.github.imsejin.study.springframework'
+    version = '0.1.0'
+    sourceCompatibility = 11
+    targetCompatibility = 11
+
     dependencies {
+        implementation rootProject // All sub projects will import root project.
         implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web'
 
         /*
@@ -59,6 +66,12 @@ subprojects {
         useJUnitPlatform()
     }
 }
+
+//project(':study-webmvc') {
+//    dependencies {
+//        compile project(':study-core')
+//    }
+//}
 
 configurations {
     compileOnly {
