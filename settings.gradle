@@ -1,2 +1,3 @@
 rootProject.name = 'study-springframework'
 include 'study-core'
+include 'study-webmvc'
