@@ -9,13 +9,15 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '2.4.1'
     id 'io.spring.dependency-management' version '1.0.10.RELEASE'
+    id 'idea' // optional (to generate IntelliJ IDEA project files)
+    id 'eclipse' // optional (to generate Eclipse project files)
 }
 
 allprojects {
     group = 'io.github.imsejin.study.springframework'
     version = '0.1.0'
-    sourceCompatibility = '1.8'
-    targetCompatibility = '1.8'
+    sourceCompatibility = 11
+    targetCompatibility = 11
     [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
     apply plugin: 'java'
@@ -46,6 +48,7 @@ subprojects {
         testImplementation(group: 'org.springframework.boot', name: 'spring-boot-starter-test') {
             exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
         }
+
         compileOnly group: 'org.projectlombok', name: 'lombok'
         annotationProcessor group: 'org.projectlombok', name: 'lombok'
         testCompileOnly group: 'org.projectlombok', name: 'lombok'

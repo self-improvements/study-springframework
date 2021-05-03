@@ -6,8 +6,9 @@ import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.BeanNameGenerator;
 
 /**
- * Simple class name이 spring framework의 default policy of bean name generator.
- * package가 다르고 class name이 같은 경우 {@link BeanDefinitionStoreException}과
+ * Spring framework의 default policy of bean name generator는
+ * bean name을 {@link Class#getSimpleName()}로 한다. package가 다르고
+ * class name이 같은 경우 {@link BeanDefinitionStoreException}과
  * {@code org.springframework.context.annotation.ConflictingBeanDefinitionException}
  * 예외가 발생한다.
  */
