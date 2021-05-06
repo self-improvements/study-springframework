@@ -33,6 +33,16 @@ allprojects {
     tasks.withType(JavaCompile) {
         options.encoding = 'UTF-8'
     }
+
+    dependencies {
+        implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web'
+        implementation group: 'org.reflections', name: 'reflections', version: '0.9.12'
+
+        compileOnly group: 'org.projectlombok', name: 'lombok'
+        annotationProcessor group: 'org.projectlombok', name: 'lombok'
+        testCompileOnly group: 'org.projectlombok', name: 'lombok'
+        testAnnotationProcessor group: 'org.projectlombok', name: 'lombok'
+    }
 }
 
 subprojects {
@@ -43,7 +53,6 @@ subprojects {
 
     dependencies {
         implementation rootProject // All sub projects will import root project.
-        implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web'
 
         /*
         spring-boot v2.3 이후로 "spring-boot-starter-web", "spring-boot-starter-webflux"가
@@ -55,23 +64,12 @@ subprojects {
         testImplementation(group: 'org.springframework.boot', name: 'spring-boot-starter-test') {
             exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
         }
-
-        compileOnly group: 'org.projectlombok', name: 'lombok'
-        annotationProcessor group: 'org.projectlombok', name: 'lombok'
-        testCompileOnly group: 'org.projectlombok', name: 'lombok'
-        testAnnotationProcessor group: 'org.projectlombok', name: 'lombok'
     }
 
     test {
         useJUnitPlatform()
     }
 }
-
-//project(':study-webmvc') {
-//    dependencies {
-//        compile project(':study-core')
-//    }
-//}
 
 configurations {
     compileOnly {
