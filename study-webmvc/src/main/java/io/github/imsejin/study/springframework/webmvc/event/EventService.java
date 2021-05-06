@@ -1,11 +1,13 @@
 package io.github.imsejin.study.springframework.webmvc.event;
 
+import io.github.imsejin.study.springframework.annotation.Marking;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
 
+@Marking
 @Service
 public class EventService {
 
