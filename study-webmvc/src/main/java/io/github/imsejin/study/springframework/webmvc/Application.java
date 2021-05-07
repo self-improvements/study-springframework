@@ -13,7 +13,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @RequiredArgsConstructor
 public class Application implements ApplicationRunner {
 
-    private final MarkingAutoConfig.Classes classes;
+    private final MarkingAutoConfig.Classes markingClasses;
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
@@ -21,7 +21,7 @@ public class Application implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        classes.get().forEach(it -> log.info("{}", it));
+        markingClasses.get().forEach(it -> log.info("{}", it));
     }
 
 }
