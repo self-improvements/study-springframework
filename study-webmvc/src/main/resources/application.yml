@@ -5,6 +5,13 @@ spring:
     prefix: classpath:/templates/
     mode: html
     suffix: .html
+    cache: false
+
+  devtools:
+    restart:
+      enabled: true
+    livereload:
+      enabled: true
 
 server:
   port: 8081
