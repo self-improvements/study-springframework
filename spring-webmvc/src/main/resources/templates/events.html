@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>Event Lists</h1>
+<ol>
+    <li th:each="event: ${events}" th:object="${event}">
+        <p th:text="*{id}"></p>
+        <p th:text="*{name}"></p>
+        <p th:text="*{capacity}"></p>
+        <p th:text="*{startAt}"></p>
+        <p th:text="*{endAt}"></p>
+    </li>
+</ol>
+</body>
+</html>

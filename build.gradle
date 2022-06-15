@@ -1,5 +1,6 @@
 buildscript {
     repositories {
+        mavenLocal()
         // https://repo.maven.apache.org/maven2
         mavenCentral()
     }
@@ -7,18 +8,18 @@ buildscript {
 
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '2.4.1'
-    id 'io.spring.dependency-management' version '1.0.10.RELEASE'
+    id 'org.springframework.boot' version '2.6.8'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'idea' // optional (to generate IntelliJ IDEA project files)
     id 'eclipse' // optional (to generate Eclipse project files)
 }
 
-group = 'io.github.imsejin.study.springframework'
-version = '0.1.0'
-sourceCompatibility = 11
-targetCompatibility = 11
-
 allprojects {
+    group = 'io.github.imsejin.study.springframework'
+    version = '0.1.0'
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+
     [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
     apply plugin: 'java'
@@ -31,12 +32,11 @@ allprojects {
         mavenLocal()
         mavenCentral()
     }
+}
 
-    tasks.withType(JavaCompile) {
-        options.encoding = 'UTF-8'
-    }
-
+subprojects {
     dependencies {
+//        implementation rootProject // All sub projects will import root project.
         implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web'
         implementation group: 'org.reflections', name: 'reflections', version: '0.9.12'
 
@@ -44,17 +44,6 @@ allprojects {
         annotationProcessor group: 'org.projectlombok', name: 'lombok'
         testCompileOnly group: 'org.projectlombok', name: 'lombok'
         testAnnotationProcessor group: 'org.projectlombok', name: 'lombok'
-    }
-}
-
-subprojects {
-    group = 'io.github.imsejin.study.springframework'
-    version = '0.1.0'
-    sourceCompatibility = 11
-    targetCompatibility = 11
-
-    dependencies {
-        implementation rootProject // All sub projects will import root project.
 
         /*
         spring-boot v2.3 이후로 "spring-boot-starter-web", "spring-boot-starter-webflux"가
@@ -71,11 +60,11 @@ subprojects {
     test {
         useJUnitPlatform()
     }
-}
 
-configurations {
-    compileOnly {
-        extendsFrom annotationProcessor
+    configurations {
+        compileOnly {
+            extendsFrom annotationProcessor
+        }
     }
 }
 
