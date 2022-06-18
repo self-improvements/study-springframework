@@ -1,3 +1,5 @@
 rootProject.name = 'study-springframework'
+
 include ':spring-core'
 include ':spring-webmvc'
+include ':spring-securiy'

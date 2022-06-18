@@ -1,6 +1,5 @@
 buildscript {
     repositories {
-        mavenLocal()
         // https://repo.maven.apache.org/maven2
         mavenCentral()
     }
@@ -29,7 +28,7 @@ allprojects {
     // apply plugin: 'eclipse'
 
     repositories {
-        mavenLocal()
+//        mavenLocal()
         mavenCentral()
     }
 }
@@ -37,22 +36,21 @@ allprojects {
 subprojects {
     dependencies {
 //        implementation rootProject // All sub projects will import root project.
-        implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web'
-        implementation group: 'org.reflections', name: 'reflections', version: '0.9.12'
+        implementation 'org.reflections:reflections:0.9.12'
 
-        compileOnly group: 'org.projectlombok', name: 'lombok'
-        annotationProcessor group: 'org.projectlombok', name: 'lombok'
-        testCompileOnly group: 'org.projectlombok', name: 'lombok'
-        testAnnotationProcessor group: 'org.projectlombok', name: 'lombok'
+        compileOnly 'org.projectlombok:lombok'
+        annotationProcessor 'org.projectlombok:lombok'
+        testCompileOnly 'org.projectlombok:lombok'
+        testAnnotationProcessor 'org.projectlombok:lombok'
 
         /*
         spring-boot v2.3 이후로 "spring-boot-starter-web", "spring-boot-starter-webflux"가
         "spring-boot-starter-validation"를 포함하지 않는다.
         (https://www.youtube.com/watch?v=cP8TwMV4LjE&t=70s)
          */
-        implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation'
+        implementation 'org.springframework.boot:spring-boot-starter-validation'
 
-        testImplementation(group: 'org.springframework.boot', name: 'spring-boot-starter-test') {
+        testImplementation('org.springframework.boot:spring-boot-starter-test') {
             exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
         }
     }

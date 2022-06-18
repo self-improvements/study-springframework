@@ -1,8 +1,4 @@
 dependencies {
-    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-aop'
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
 }
-
-//bootJar {
-//    enabled = true
-//    mainClass = 'io.github.imsejin.study.springframework.core.Application'
-//}
