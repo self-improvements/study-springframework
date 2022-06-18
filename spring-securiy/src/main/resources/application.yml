@@ -1,0 +1,41 @@
+spring:
+
+  h2.console:
+    enabled: true
+    path: /h2-console
+
+  sql.init:
+    encoding: UTF-8
+    continue-on-error: false
+    data-locations:
+      - classpath:/sql/data.sql
+
+  datasource:
+    hikari:
+      jdbc-url: jdbc:h2:mem:test-db
+      driver-class-name: org.h2.Driver
+      username: sa
+      password:
+      connection-test-query: SELECT 1
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        #        show_sql: true
+        format_sql: true
+        use_sql_comments: true
+    # This will ensure, that after Hibernate schema creation is performed then additionally schema.sql
+    # is read for any additional schema changes and data.sql is executed to populate the database.
+    defer-datasource-initialization: true
+    show-sql: true
+#    generate-ddl: true
+
+server:
+  port: 8081
+
+logging:
+  level:
+    io.github.imsejin.study.springframework.security: DEBUG
