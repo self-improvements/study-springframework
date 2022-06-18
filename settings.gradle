@@ -1,5 +1,6 @@
 rootProject.name = 'study-springframework'
 
-include ':spring-core'
-include ':spring-webmvc'
-include ':spring-securiy'
+// Includes subprojects in root directory as modules automatically.
+file(".").listFiles({ it.isDirectory() && it.name.startsWith('spring-') } as FileFilter).each {
+    include ":${it.name}"
+}
