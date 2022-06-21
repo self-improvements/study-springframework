@@ -1,3 +1,5 @@
+import gradle.build.custom.Version
+
 import java.nio.charset.StandardCharsets
 
 buildscript {
@@ -38,7 +40,7 @@ allprojects {
 subprojects {
     dependencies {
 //        implementation rootProject // All sub projects will import root project.
-        implementation 'org.reflections:reflections:0.9.12'
+        implementation "org.reflections:reflections:$Version.REFLECTIONS"
 
         compileOnly 'org.projectlombok:lombok'
         annotationProcessor 'org.projectlombok:lombok'
