@@ -66,10 +66,10 @@ import java.util.Arrays;
  */
 @Slf4j
 @SpringBootApplication(scanBasePackages = "io.github.imsejin.study.springframework")
-public class Application implements ApplicationRunner {
+public class SpringWebMvcApplication implements ApplicationRunner {
 
     public static void main(String[] args) throws Exception {
-        SpringApplication.run(Application.class, args);
+        SpringApplication.run(SpringWebMvcApplication.class, args);
 
 //        DefaultParameterNameDiscoverer discoverer = new DefaultParameterNameDiscoverer();
         StandardReflectionParameterNameDiscoverer discoverer = new StandardReflectionParameterNameDiscoverer();

@@ -18,10 +18,10 @@ import org.springframework.scheduling.annotation.EnableAsync;
 )
 @PropertySource("classpath:/test.properties")
 @RequiredArgsConstructor
-public class Application implements ApplicationRunner {
+public class SpringCoreApplication implements ApplicationRunner {
 
     public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+        SpringApplication.run(SpringCoreApplication.class, args);
     }
 
     @Override

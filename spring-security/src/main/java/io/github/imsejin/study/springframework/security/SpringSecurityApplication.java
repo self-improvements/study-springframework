@@ -5,11 +5,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 
 @ConfigurationPropertiesScan
-@SpringBootApplication(scanBasePackageClasses = Application.class)
-public class Application {
+@SpringBootApplication(scanBasePackageClasses = SpringSecurityApplication.class)
+public class SpringSecurityApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+        SpringApplication.run(SpringSecurityApplication.class, args);
     }
 
 }
