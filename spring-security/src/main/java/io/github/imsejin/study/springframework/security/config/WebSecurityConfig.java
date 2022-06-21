@@ -51,7 +51,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/apis/signup", "/apis/authentication").permitAll()
                 .anyRequest().authenticated();
 
-        http.apply(new JwtSecurityConfigurer(this.jwtProperties, this.tokenProvider));//.configure(http);
+        http.apply(new JwtSecurityConfigurer(this.jwtProperties, this.tokenProvider));
     }
 
     @Bean
