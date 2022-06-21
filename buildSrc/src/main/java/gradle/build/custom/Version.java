@@ -5,6 +5,7 @@ package gradle.build.custom;
  */
 public enum Version {
 
+    SPRING_BOOT("2.6.8"),
     REFLECTIONS("0.9.12"),
     JWT("0.11.2");
 

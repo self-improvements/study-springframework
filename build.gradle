@@ -7,12 +7,18 @@ buildscript {
         // https://repo.maven.apache.org/maven2
         mavenCentral()
     }
+
+    dependencies {
+        // Dynamic (or legacy) application of gradle plugin.
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:$Version.SPRING_BOOT"
+    }
 }
 
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '2.6.8'
-    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    // Replaced with "buildscript.dependencies.classpath".
+//    id 'org.springframework.boot' version '2.6.8'
+//    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'idea' // optional (to generate IntelliJ IDEA project files)
     id 'eclipse' // optional (to generate Eclipse project files)
 }
