@@ -1,6 +1,13 @@
 rootProject.name = 'study-springframework'
 
 // Includes subprojects in root directory as modules automatically.
-file(".").listFiles({ it.isDirectory() && it.name.startsWith('spring-') } as FileFilter).each {
+children(file('.'), {
+    it.isDirectory() && it.name.startsWith('spring-')
+            && children(it, { child -> child.isFile() && child.name == 'build.gradle' }).length > 0
+}).each {
     include ":${it.name}"
+}
+
+static File[] children(File self, FileFilter fileFilter = null) {
+    fileFilter ? self.listFiles(fileFilter) : self.listFiles()
 }
