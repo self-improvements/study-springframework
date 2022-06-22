@@ -1,1 +1,35 @@
+spring:
+  profiles:
+    active: local
 
+logging:
+  level:
+    io.github.imsejin.study.springframework.batch: DEBUG
+
+---
+
+spring:
+  config.activate.on-profile: local
+  h2.console:
+    enabled: true
+    path: /h2-console
+
+  datasource:
+    hikari:
+      jdbc-url: jdbc:h2:mem:test-db
+      driver-class-name: org.h2.Driver
+      username: sa
+      password:
+      connection-test-query: SELECT 1
+
+---
+
+spring:
+  config.activate.on-profile: mysql
+  datasource:
+    hikari:
+      jdbc-url: jdbc:mysql://oneplat.asuscomm.com:3306/pkqss_mgmt_db?serverTimezone=Asia/Seoul&useSSL=false&allowMultiQueries=true
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      username: admin
+      password: dbfrhrfh1rk!
+      connection-test-query: SELECT 1
