@@ -74,6 +74,18 @@ subprojects {
             extendsFrom annotationProcessor
         }
     }
+
+    // To solve build failure (or you can disable kotlin plugin built in IntelliJ IDEA).
+    // The following message is from that error.
+    //
+    // Task 'prepareKotlinBuildScriptModel' not found in project '?'.
+    //
+    // This task has nothing to do with the fact that your project doesn't have Kotlin sources.
+    // It's about supporting the edition of .gradle.kts scripts in the IDE.
+    // The fact that you have such scripts or not can't be detected upfront.
+    // This task needs to run always. When you have no .gradle.kts scripts it's doesn't do anything.
+    // (ref. https://github.com/gradle/gradle/issues/14889)
+    tasks.register 'prepareKotlinBuildScriptModel'
 }
 
 bootJar {
