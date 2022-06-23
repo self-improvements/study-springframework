@@ -5,10 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
-import org.springframework.batch.core.configuration.annotation.JobScope;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.repeat.RepeatStatus;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -24,30 +22,15 @@ public class SimpleJobConfig {
     @Bean
     Job simpleJob() {
         return jobBuilderFactory.get("simpleJob")
-//                .start(simpleStep())
-                .start(simpleStep0(null))
-                .next(simpleStep1(null))
+                .start(simpleStep0())
+                .next(simpleStep1())
                 .build();
     }
 
     @Bean
-    @JobScope
-    Step simpleStep() {
-        return stepBuilderFactory.get("simpleStep")
-                .tasklet(((contribution, chunkContext) -> {
-//                    throw new RuntimeException("Failed on step 1");
-                    log.info("===== Step 0: {}, {}", contribution, chunkContext);
-                    return RepeatStatus.FINISHED;
-                }))
-                .build();
-    }
-
-    @Bean
-    @JobScope
-    Step simpleStep0(@Value("#{jobParameters['param']}") String param) {
+    Step simpleStep0() {
         return stepBuilderFactory.get("simpleStep0")
                 .tasklet(((contribution, chunkContext) -> {
-//                    throw new RuntimeException("Failed on step 1");
                     log.info("===== Step 1: {}, {}", contribution, chunkContext);
                     return RepeatStatus.FINISHED;
                 }))
@@ -55,8 +38,7 @@ public class SimpleJobConfig {
     }
 
     @Bean
-    @JobScope
-    Step simpleStep1(@Value("#{jobParameters['param']}") String param) {
+    Step simpleStep1() {
         return stepBuilderFactory.get("simpleStep1")
                 .tasklet(((contribution, chunkContext) -> {
                     log.info("===== Step 2: {}, {}", contribution, chunkContext);
