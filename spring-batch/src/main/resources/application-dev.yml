@@ -1,0 +1,16 @@
+spring:
+  config.activate.on-profile: dev
+
+  datasource:
+    hikari:
+      jdbc-url: jdbc:mysql://oneplat.asuscomm.com:3306/pkqss_mgmt_db?serverTimezone=Asia/Seoul&useSSL=false&allowMultiQueries=true
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      username: admin
+      password: dbfrhrfh1rk!
+      connection-test-query: SELECT 1
+
+  batch:
+    job:
+      # If a program argument "job.name" is given, assigns to "spring.batch.job.name",
+      # or "NONE" as default. When "spring.batch.job.name" is "NONE", no batch job runs.
+      names: ${job.name:NONE}
