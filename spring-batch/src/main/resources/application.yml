@@ -6,4 +6,5 @@ spring:
 
 logging:
   level:
+    org.springframework.batch: DEBUG
     io.github.imsejin.study.springframework.batch: DEBUG
