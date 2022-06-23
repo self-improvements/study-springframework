@@ -60,6 +60,10 @@ public class JdbcCursorItemReaderJobConfig {
      * 기본적으로 TCP 통신은 Socket으로 하기 때문에 타임아웃을 설정해줘야 합니다.
      * Cursor는 하나의 Connection으로 Batch가 끝날 때까지 사용되기 때문에
      * 작업이 다 끝나기전에 DB와 애플리케이션의 Connection이 먼저 끊어질 수 있습니다.
+     *
+     * <p> Batch 수행 시간이 오래 걸리는 경우에는 PagingItemReader를 사용하는 게 낫습니다.
+     * Paging의 경우 한 페이지를 읽을때마다 Connection을 맺고 끊기 때문에
+     * 아무리 많은 데이터라도 타임아웃과 부하 없이 수행될 수 있습니다.
      */
     @Bean
     JdbcCursorItemReader<KanClassification> reader() {
