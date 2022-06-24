@@ -10,7 +10,6 @@ import org.springframework.batch.core.configuration.annotation.StepBuilderFactor
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.database.JdbcCursorItemReader;
 import org.springframework.batch.item.database.builder.JdbcCursorItemReaderBuilder;
-import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -25,13 +24,9 @@ public class JdbcCursorItemReaderJobConfig {
 
     private static final int CHUNK_SIZE = 100;
 
-    // jdbc_cursor_item_reader_job
-    private final String JOB_NAME = getClass().getSimpleName().replaceAll("(?<!^|_|[A-Z])([A-Z])", "_$1")
-            .replaceAll("^(.+_Job).*$", "$1").toLowerCase(Locale.US);
+    private static final String JOB_NAME = "jdbc_cursor_item_reader_job";
 
-    // jdbc_cursor_item_reader_step
-    private final String STEP_NAME = getClass().getSimpleName().replaceAll("(?<!^|_|[A-Z])([A-Z])", "_$1")
-            .replaceAll("^(.+)_Job.*$", "$1_step").toLowerCase(Locale.US);
+    private static final String STEP_NAME = "jdbc_cursor_item_reader_step";
 
     private final JobBuilderFactory jobBuilderFactory;
 
@@ -39,14 +34,14 @@ public class JdbcCursorItemReaderJobConfig {
 
     private final DataSource dataSource;
 
-    @Bean
+    @Bean(JOB_NAME)
     Job job() {
         return jobBuilderFactory.get(JOB_NAME)
                 .start(step())
                 .build();
     }
 
-    @Bean
+    @Bean(STEP_NAME)
     Step step() {
         return stepBuilderFactory.get(STEP_NAME)
                 .<KanClassification, KanClassification>chunk(CHUNK_SIZE)
@@ -65,7 +60,6 @@ public class JdbcCursorItemReaderJobConfig {
      * Paging의 경우 한 페이지를 읽을때마다 Connection을 맺고 끊기 때문에
      * 아무리 많은 데이터라도 타임아웃과 부하 없이 수행될 수 있습니다.
      */
-    @Bean
     JdbcCursorItemReader<KanClassification> reader() {
         return new JdbcCursorItemReaderBuilder<KanClassification>()
                 .fetchSize(CHUNK_SIZE)
@@ -88,7 +82,6 @@ public class JdbcCursorItemReaderJobConfig {
                 .build();
     }
 
-    @Bean
     ItemWriter<KanClassification> writer() {
         return items -> {
             for (var item : items) {
