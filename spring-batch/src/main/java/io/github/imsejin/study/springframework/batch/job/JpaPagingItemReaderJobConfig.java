@@ -54,7 +54,8 @@ public class JpaPagingItemReaderJobConfig {
         return new JpaPagingItemReaderBuilder<KanClassificationEntity>()
                 .pageSize(CHUNK_SIZE)
                 .entityManagerFactory(entityManagerFactory)
-                .queryString("SELECT k FROM KanClassificationEntity k WHERE code LIKE CONCAT(:code, '%')")
+                // Must contain ORDER BY statement.
+                .queryString("SELECT k FROM KanClassificationEntity k WHERE code LIKE CONCAT(:code, '%') ORDER BY code")
                 .parameterValues(Map.of("code", "01"))
                 .name("jpa_paging_item_reader")
                 .build();
