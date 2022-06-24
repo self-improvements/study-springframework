@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.persistence.EntityManagerFactory;
+import java.util.Map;
 
 @Slf4j
 @Configuration
@@ -53,7 +54,8 @@ public class JpaPagingItemReaderJobConfig {
         return new JpaPagingItemReaderBuilder<KanClassificationEntity>()
                 .pageSize(CHUNK_SIZE)
                 .entityManagerFactory(entityManagerFactory)
-                .queryString("SELECT k FROM KanClassificationEntity k WHERE code like '01%'")
+                .queryString("SELECT k FROM KanClassificationEntity k WHERE code LIKE CONCAT(:code, '%')")
+                .parameterValues(Map.of("code", "01"))
                 .name("jpa_paging_item_reader")
                 .build();
     }
