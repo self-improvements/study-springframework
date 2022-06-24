@@ -1,4 +1,4 @@
-package io.github.imsejin.study.springframework.batch.domain;
+package io.github.imsejin.study.springframework.batch.entity;
 
 import lombok.Getter;
 import lombok.Setter;

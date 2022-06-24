@@ -1,6 +1,6 @@
 package io.github.imsejin.study.springframework.batch.job;
 
-import io.github.imsejin.study.springframework.batch.domain.KanClassificationEntity;
+import io.github.imsejin.study.springframework.batch.entity.KanClassificationEntity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
