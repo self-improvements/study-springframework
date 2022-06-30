@@ -37,18 +37,20 @@ public class ParameterJobConfig {
     @Bean
     Job parameterJob() {
         return jobBuilderFactory.get("parameterJob")
-                .start(parameterStep0(null))
-                .next(parameterStep1(null))
+                .start(jobParameterStep0(null))
+                .next(jobParameterStep1(null))
+                .next(systemPropertyStep0(null))
+                .next(systemPropertyStep1(null))
                 .build();
     }
 
     @Bean
     // To use job parameters, annotate @JobScope.
     @JobScope
-    Step parameterStep0(@Value("#{jobParameters['param']}") String param) {
-        return stepBuilderFactory.get("parameterStep0")
+    Step jobParameterStep0(@Value("#{jobParameters['param0']}") String param0) {
+        return stepBuilderFactory.get("jobParameterStep0")
                 .tasklet(((contribution, chunkContext) -> {
-                    log.info("===== Step 1: {}", param);
+                    log.info("===== jobParameterStep0: {}", param0);
                     return RepeatStatus.FINISHED;
                 }))
                 .build();
@@ -57,10 +59,30 @@ public class ParameterJobConfig {
     @Bean
     // To use job parameters, annotate @JobScope.
     @JobScope
-    Step parameterStep1(@Value("#{jobParameters['param']}") String param) {
-        return stepBuilderFactory.get("parameterStep1")
+    Step jobParameterStep1(@Value("#{jobParameters['param1']}") String param1) {
+        return stepBuilderFactory.get("jobParameterStep1")
                 .tasklet(((contribution, chunkContext) -> {
-                    log.info("===== Step 2: {}", param);
+                    log.info("===== jobParameterStep1: {}", param1);
+                    return RepeatStatus.FINISHED;
+                }))
+                .build();
+    }
+
+    @Bean
+    Step systemPropertyStep0(@Value("#{systemProperties['java.version']}") String javaVersion) {
+        return stepBuilderFactory.get("systemPropertyStep0")
+                .tasklet(((contribution, chunkContext) -> {
+                    log.info("===== systemPropertyStep0: {}", javaVersion);
+                    return RepeatStatus.FINISHED;
+                }))
+                .build();
+    }
+
+    @Bean
+    Step systemPropertyStep1(@Value("#{environment.getProperty('java.home')}") String javaHome) {
+        return stepBuilderFactory.get("systemPropertyStep1")
+                .tasklet(((contribution, chunkContext) -> {
+                    log.info("===== systemPropertyStep1: {}", javaHome);
                     return RepeatStatus.FINISHED;
                 }))
                 .build();
