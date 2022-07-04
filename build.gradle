@@ -48,6 +48,10 @@ subprojects {
 //        implementation rootProject // All sub projects will import root project.
         implementation "org.reflections:reflections:$Version.REFLECTIONS"
 
+        // warning: unknown enum constant When.MAYBE
+        // reason: class file for javax.annotation.meta.When not found
+        implementation "com.google.code.findbugs:jsr305:$Version.JSR305"
+
         compileOnly 'org.projectlombok:lombok'
         annotationProcessor 'org.projectlombok:lombok'
         testCompileOnly 'org.projectlombok:lombok'
