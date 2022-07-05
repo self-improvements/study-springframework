@@ -12,7 +12,7 @@ If you annotate `EnableBatchProcessing`, spring application will run some config
     2. JpaBasicBatchConfigurer
         - Instantiate batch objects about JPA.
 
-    - If you want, you can implement BatchConfigurer and apply it to your batch application.
+    - If you want, you can implement `BatchConfigurer` and apply it to your batch application.
 
 3. BatchAutoConfiguration
     - Register as bean JobLauncherApplicationRunner that executes all jobs registered as bean on startup, since it is
