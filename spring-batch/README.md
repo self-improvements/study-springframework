@@ -46,3 +46,24 @@ The spring batch metadata tables match the spring batch java object respectively
 
 - BATCH_STEP_EXECUTION
 - BATCH_STEP_EXECUTION_CONTEXT: Serialize all of step-level data as JSON. That data is not sharable to other steps.
+
+# Domain Class
+
+### Job
+
+This is the highest concept in spring batch architecture. `Job` is a specification of one batch work. It describes how
+batch work is configured and executed. It must contain one step at least.
+
+### JobInstance
+
+This is created when `Job` is executed by `JobLauncher`.
+
+#### Differences between Job and JobInstance
+
+`Job` is the specification of one batch. Every execution the content of `Job` is the same, but parameters or other
+environment differ from each execution. `JobInstance` contains all data of execution to be stored as metadata at that
+every time. There is one `Job` and many `JobInstance`.
+
+If a pair of job name and job parameters doesn't exist in the database, create a new instance of `JobInstance`, or that
+already exists, return an instance of `JobInstance` using job name and job parameters stored in the database.
+ 
