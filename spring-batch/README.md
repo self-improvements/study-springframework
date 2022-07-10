@@ -2,18 +2,47 @@
 
 If you annotate `EnableBatchProcessing`, spring application will run some configuration classes automatically.
 
-1. SimpleBatchConfiguration
-    - Create JobBuilderFactory and StepBuilderFactory.
-    - Create components of spring batch as proxy object.
+### SimpleBatchConfiguration
 
-2. BatchConfigurerConfiguration
-    1. BasicBatchConfigurer
-        - Instantiate target object of proxy created on SimpleBatchConfiguration.
-    2. JpaBasicBatchConfigurer
-        - Instantiate batch objects about JPA.
+- Create JobBuilderFactory and StepBuilderFactory.
+- Create components of spring batch as proxy object.
 
-    - If you want, you can implement `BatchConfigurer` and apply it to your batch application.
+### BatchConfigurerConfiguration
 
-3. BatchAutoConfiguration
-    - Register as bean JobLauncherApplicationRunner that executes all jobs registered as bean on startup, since it is
-      implementation of ApplicationRunner that will be executed on startup.
+1. BasicBatchConfigurer
+    - Instantiate target object of proxy created on SimpleBatchConfiguration.
+2. JpaBasicBatchConfigurer
+    - Instantiate batch objects about JPA.
+
+If you want, you can implement `BatchConfigurer` and apply it to your batch application.
+
+### BatchAutoConfiguration
+
+- Register as bean JobLauncherApplicationRunner that executes all jobs registered as bean on startup, since it is
+  implementation of ApplicationRunner that will be executed on startup.
+
+# Metadata Schema
+
+The spring batch metadata tables match the spring batch java object respectively.
+
+- `JobInstance` (core): BATCH_JOB_INSTANCE
+- `JobExecution` (core): BATCH_JOB_EXECUTION
+- `JobParameters` (core): BATCH_JOB_EXECUTION_PARAMS
+- `StepExecution` (core): BATCH_STEP_EXECUTION
+- `ExecutionContext` (infrastructure): BATCH_JOB_EXECUTION_CONTEXT, BATCH_STEP_EXECUTION_CONTEXT
+
+`JobRepository` is responsible for saving and storing each java object into its matched table.
+
+[Reference](https://docs.spring.io/spring-batch/docs/current/reference/html/schema-appendix.html#metaDataSchema)
+
+### Job
+
+- BATCH_JOB_INSTANCE
+- BATCH_JOB_EXECUTION
+- BATCH_JOB_EXECUTION_PARAMS
+- BATCH_JOB_EXECUTION_CONTEXT: Serialize all of job-level data as JSON. That data is sharable to its steps.
+
+### Step
+
+- BATCH_STEP_EXECUTION
+- BATCH_STEP_EXECUTION_CONTEXT: Serialize all of step-level data as JSON. That data is not sharable to other steps.
