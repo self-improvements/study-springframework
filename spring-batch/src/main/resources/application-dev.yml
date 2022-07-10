@@ -16,6 +16,8 @@ spring:
       # If a program argument "job.name" is given, assigns to "spring.batch.job.name",
       # or "NONE" as default. When "spring.batch.job.name" is "NONE", no batch job runs.
       names: ${job.name:NONE}
+    jdbc:
+      initialize-schema: never
 
   # It makes hibernate map physical table with @Table.name as it is.
   jpa.hibernate.naming.physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
