@@ -32,6 +32,23 @@ public class SimpleJobConfig {
         return stepBuilderFactory.get("simpleStep0")
                 .tasklet(((contribution, chunkContext) -> {
                     log.info("===== Step 1: {}, {}", contribution, chunkContext);
+
+                    // contribution.stepExecution.jobExecution.jobParameters
+                    var jobParameters = contribution.getStepExecution().getJobExecution().getJobParameters();
+                    for (var entry : jobParameters.getParameters().entrySet()) {
+                        var jobParameter = entry.getValue();
+                        System.out.printf("contribution.stepExecution.jobExecution.jobParameters['%s']: %s(%s, %s)%n",
+                                entry.getKey(), jobParameter.getClass().getSimpleName(), jobParameter.getType(), jobParameter.getValue());
+                    }
+
+                    // chunkContext.stepContext.jobParameters
+                    var jobParamMap = chunkContext.getStepContext().getJobParameters();
+                    for (var entry : jobParamMap.entrySet()) {
+                        var jobParamValue = entry.getValue();
+                        System.out.printf("chunkContext.stepContext.jobParameters['%s']: %s(%s)%n",
+                                entry.getKey(), jobParamValue.getClass().getSimpleName(), jobParamValue);
+                    }
+
                     return RepeatStatus.FINISHED;
                 }))
                 .build();

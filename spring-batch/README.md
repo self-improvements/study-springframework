@@ -58,7 +58,7 @@ batch work is configured and executed. It must contain one step at least.
 
 This is created when `Job` is executed by `JobLauncher`.
 
-### Differences between Job and JobInstance
+##### Differences between Job and JobInstance
 
 `Job` is the specification of one batch. Every execution the content of `Job` is the same, but parameters or other
 environment differ from each execution. `JobInstance` contains all data of execution to be stored as metadata at that
@@ -66,3 +66,43 @@ every time. There is one `Job` and many `JobInstance`.
 
 If a pair of job name and job parameters doesn't exist in the database, create a new instance of `JobInstance`, or that
 already exists, return an instance of `JobInstance` using job name and job parameters stored in the database.
+
+### JobParameter
+
+One or more `JobParameter` is contained in `JobParameters`. This uniquely identifies each `JobInstance` in the database
+because the spring batch doesn't allow one job to be executed with the same parameters.
+`JobInstance` and `JobParameters` is one-to-one relationship.
+
+##### Creation and Binding
+
+- On startup: `java -jar batch-app.jar name=John`
+- Code: `JobParameterBuilder`, `DefaultJobParameterConverter`
+- SpEL: `@Value("#{jobParameter['name']}") String name`, `@JobScope`, `@StepScope`
+
+##### Supported Types
+
+These are specified in `ParameterType`.
+
+- STRING
+- DATE
+- LONG
+- DOUBLE
+
+##### Binding with Program Arguments
+
+Append program arguments like this `{key}={value}`.
+(Not `--{key}={value}`. This is regarded as spring environment value)
+
+```bash
+java -jar batch-app.jar name="John Smith" birthDate=2022/07/01 age=45 weight=80.6
+```
+
+Unfortunately, these arguments are bound as string type. If you want to cast arguments to `Date`, `Long` or `Double`,
+specify type after argument name like this, `{key}(type)={value}`.
+
+```bash
+java -jar batch-app.jar name(string)="John Smith" birthDate(date)=2022/07/01 age(long)=45 weight(double)=80.6
+```
+
+The specified type must consist only of lower cases, or the name of argument will be bound as string type containing
+type name.

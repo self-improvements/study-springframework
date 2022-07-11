@@ -9,7 +9,9 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
-@Component
+import java.util.Date;
+
+//@Component
 @RequiredArgsConstructor
 public class JobRunner implements ApplicationRunner {
 
@@ -21,7 +23,10 @@ public class JobRunner implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
         var jobParameters = new JobParametersBuilder()
-                .addString("name", "user-1")
+                .addString("name", "John Smith")
+                .addDate("birthDateTime", new Date())
+                .addLong("age", 45L)
+                .addDouble("weight", 87.2)
                 .toJobParameters();
 
         jobLauncher.run(job, jobParameters);

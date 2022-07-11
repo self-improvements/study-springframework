@@ -13,7 +13,7 @@ spring:
 
   batch:
     job:
-      enabled: false
+#      enabled: false
       # If a program argument "job.name" is given, assigns to "spring.batch.job.name",
       # or "NONE" as default. When "spring.batch.job.name" is "NONE", no batch job runs.
       names: ${job.name:NONE}
