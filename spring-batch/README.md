@@ -52,7 +52,7 @@ The spring batch metadata tables match the spring batch java object respectively
 ### Job
 
 This is the highest concept in spring batch architecture. `Job` is a specification of one batch work. It describes how
-batch work is configured and executed. It must contain one step at least.
+batch work is configured and executed. It must contain one `Step` at least.
 
 ### JobInstance
 
@@ -109,13 +109,29 @@ type name.
 
 ### JobExecution
 
-This object which means try of a `JobInstance` has information of job execution. If a `JobInstance` is failed and
-then `BatchStatus` is not `COMPLETED`, you can try again to execute `Job` with the same parameters.
+This object which means try of a `JobInstance` has information of job execution. It is created on every `JobInstance`
+execution.
 
 ##### Relationship between JobInstance and JobExecution
 
-When `JobExecution.status` is `COMPLETED`, the spring batch regards corresponding `JobInstance` as completed. It means
-you can never execute that `Job` with the same parameters — JobInstanceAlreadyCompleteException.
+When `JobExecution.status: BatchStatus` is `COMPLETED`, the spring batch regards corresponding `JobInstance` as
+completed. It means you can never execute that `Job` with the same parameters — JobInstanceAlreadyCompleteException.
 
-When `JobExecution.status` is `FAILED`, the spring batch regards the corresponding `JobInstance` as incomplete. It means
-you can execute that `Job` even with the same parameters until it succeeds.
+When `JobExecution.status: BatchStatus` is `FAILED`, the spring batch regards the corresponding `JobInstance` as
+incomplete. It means you can execute that `Job` even with the same parameters until it succeeds.
+
+### Step
+
+`Job` consists of one or more `Step`. `Step` is one of many steps of a corresponding `Job`. It describes how batch data
+is loaded, processed and stored in detail.
+
+##### Implementations
+
+- TaskletStep — custom or chunk oriented
+- FlowStep
+- JobStep
+- PartitionStep
+
+### StepExecution
+
+This object which means try of a `Step` has information of step execution. It is created on every `Step` execution.
