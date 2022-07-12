@@ -29,7 +29,9 @@ allprojects {
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
 
-    [compileJava, compileTestJava]*.options*.encoding = StandardCharsets.UTF_8
+    tasks.withType(JavaCompile) {
+        options.encoding = StandardCharsets.UTF_8
+    }
 
     apply plugin: 'java'
     apply plugin: 'org.springframework.boot'
