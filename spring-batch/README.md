@@ -106,3 +106,16 @@ java -jar batch-app.jar name(string)="John Smith" birthDate(date)=2022/07/01 age
 
 The specified type must consist only of lower cases, or the name of argument will be bound as string type containing
 type name.
+
+### JobExecution
+
+This object which means try of a `JobInstance` has information of job execution. If a `JobInstance` is failed and
+then `BatchStatus` is not `COMPLETED`, you can try again to execute `Job` with the same parameters.
+
+##### Relationship between JobInstance and JobExecution
+
+When `JobExecution.status` is `COMPLETED`, the spring batch regards corresponding `JobInstance` as completed. It means
+you can never execute that `Job` with the same parameters — JobInstanceAlreadyCompleteException.
+
+When `JobExecution.status` is `FAILED`, the spring batch regards the corresponding `JobInstance` as incomplete. It means
+you can execute that `Job` even with the same parameters until it succeeds.
