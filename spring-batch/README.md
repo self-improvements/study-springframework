@@ -141,3 +141,8 @@ previous `Step` is failed, `StepExecution` of the next `Step` is not created.
 ##### Relationship between JobExecution and StepExecution
 
 `JobExecution` is successful only when all of `StepExecution` are successfully finished.
+
+### StepContribution
+
+This object stores the changes of each chunk process (including `Tasklet`) in buffer and updates its state
+with `StepExecution.apply(StepContribution)` before chunk commit. `StepExecution` creates this.
