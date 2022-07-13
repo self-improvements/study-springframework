@@ -123,7 +123,8 @@ incomplete. It means you can execute that `Job` even with the same parameters un
 ### Step
 
 `Job` consists of one or more `Step`. `Step` is one of many steps of a corresponding `Job`. It describes how batch data
-is loaded, processed and stored in detail.
+is loaded, processed and stored in detail. `Step` already successfully finished is not executed again by default though
+corresponding `Job` is failed.
 
 ##### Implementations
 
@@ -134,4 +135,9 @@ is loaded, processed and stored in detail.
 
 ### StepExecution
 
-This object which means try of a `Step` has information of step execution. It is created on every `Step` execution.
+This object which means try of a `Step` has information of step execution. It is created on every `Step` execution. If
+previous `Step` is failed, `StepExecution` of the next `Step` is not created.
+
+##### Relationship between JobExecution and StepExecution
+
+`JobExecution` is successful only when all of `StepExecution` are successfully finished.
