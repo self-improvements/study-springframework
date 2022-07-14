@@ -146,3 +146,13 @@ previous `Step` is failed, `StepExecution` of the next `Step` is not created.
 
 This object stores the changes of each chunk process (including `Tasklet`) in buffer and updates its state
 with `StepExecution.apply(StepContribution)` before chunk commit. `StepExecution` creates this.
+
+### ExecutionContext
+
+This object has the states of `JobExecution` and `StepExecution` and can be shared in the scope. Those are serialized to
+JSON and stored into the database as metadata for spring batch maintenance. This is normally used when `Job` restarts.
+
+##### Shared scope
+
+`JobExecution` has a `ExecutionContext` and it can be shared to other steps, but not other jobs.
+`StepExecution` has a `ExecutionContext` and it can't be shared to other steps.
