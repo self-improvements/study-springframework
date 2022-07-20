@@ -156,3 +156,16 @@ JSON and stored into the database as metadata for spring batch maintenance. This
 
 `JobExecution` has a `ExecutionContext` and it can be shared to other steps, but not other jobs.
 `StepExecution` has a `ExecutionContext` and it can't be shared to other steps.
+
+### JobRepository
+
+This object stores all the metadata related to spring batch. All CRUD functions is invoked by this in the
+implementations of `JobLauncher`, `Job` and `Step`.
+
+##### Configuration JobRepository
+
+Annotating `EnableBatchProcessing` makes `JobRepository` registered as a bean. You can configure `JobRepository` with
+implementing `BatchConfigurer` or extending `BasicBatchConfigurer`.
+
+- JDBC: `JobRepositoryFactoryBean`
+- In Memory: `MapJobRepositoryFactoryBean` — Not stored domain objects. (`ResourcelessTransactionManager`)
