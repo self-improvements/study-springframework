@@ -169,3 +169,67 @@ implementing `BatchConfigurer` or extending `BasicBatchConfigurer`.
 
 - JDBC: `JobRepositoryFactoryBean`
 - In Memory: `MapJobRepositoryFactoryBean` — Not stored domain objects. (`ResourcelessTransactionManager`)
+
+### JobLauncher
+
+This accepts `Job` and `JobParameters` as arguments, performs batch processing and returns `JobExecution`.
+
+##### Synchronous Execution
+
+`SyncTaskExecutor` is the implementation of `TaskExecutor` — suitable for a scheduler.
+
+```text
+     ┌──────┐          ┌───────────┐                      ┌───┐          ┌────┐
+     │Client│          │JobLauncher│                      │Job│          │Step│
+     └──┬───┘          └─────┬─────┘                      └─┬─┘          └─┬──┘
+        │       run()        │                              │              │   
+        │───────────────────>│                              │              │   
+        │                    │                              │              │   
+        │                    │          execute()           │              │   
+        │                    │─────────────────────────────>│              │   
+        │                    │                              │              │   
+        │                    │                              │  handle()    │   
+        │                    │                              │─────────────>│   
+        │                    │                              │              │   
+        │                    │                              │              │   
+        │                    │                              │<─────────────│   
+        │                    │                              │              │   
+        │                    │ExitStatus.FINISHED or FAILED │              │   
+        │                    │<─────────────────────────────│              │   
+        │                    │                              │              │   
+        │    JobExecution    │                              │              │   
+        │<───────────────────│                              │              │   
+     ┌──┴───┐          ┌─────┴─────┐                      ┌─┴─┐          ┌─┴──┐
+     │Client│          │JobLauncher│                      │Job│          │Step│
+     └──────┘          └───────────┘                      └───┘          └────┘
+```
+
+##### Asynchronous Execution
+
+`SimpleAsyncTaskExecutor` is the implementation of `TaskExecutor` — suitable for HTTP request.
+
+```text
+     ┌──────┐                       ┌───────────┐                      ┌───┐          ┌────┐
+     │Client│                       │JobLauncher│                      │Job│          │Step│
+     └──┬───┘                       └─────┬─────┘                      └─┬─┘          └─┬──┘
+        │              run()              │                              │              │   
+        │────────────────────────────────>│                              │              │   
+        │                                 │                              │              │   
+        │ JobExecution(ExitStatus.UNKNOWN)│                              │              │   
+        │<────────────────────────────────│                              │              │   
+        │                                 │                              │              │   
+        │                                 │           execute()          │              │   
+        │                                 │─────────────────────────────>│              │   
+        │                                 │                              │              │   
+        │                                 │                              │   handle()   │   
+        │                                 │                              │─────────────>│  
+        │                                 │                              │              │   
+        │                                 │                              │              │   
+        │                                 │                              │<─────────────│   
+        │                                 │                              │              │   
+        │                                 │ ExitStatus.FINISHED or FAILED│              │   
+        │                                 │<─────────────────────────────│              │   
+     ┌──┴───┐                       ┌─────┴─────┐                      ┌─┴─┐          ┌─┴──┐
+     │Client│                       │JobLauncher│                      │Job│          │Step│
+     └──────┘                       └───────────┘                      └───┘          └────┘
+```
