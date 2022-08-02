@@ -233,3 +233,21 @@ This accepts `Job` and `JobParameters` as arguments, performs batch processing a
      │Client│                       │JobLauncher│                      │Job│          │Step│
      └──────┘                       └───────────┘                      └───┘          └────┘
 ```
+
+# Job
+
+### Execution Option
+
+`spring.batch.job.names: ${job.name:NONE}`
+
+Single job name
+
+```bash
+java -jar batch-app.jar --job.name=simpleJob
+```
+
+Multiple job names
+
+```bash
+java -jar batch-app.jar --job.name=simpleJob,greetingJob
+```
