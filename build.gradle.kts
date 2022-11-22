@@ -4,7 +4,6 @@ import java.nio.charset.StandardCharsets
 plugins {
     id("java")
     id("org.springframework.boot").version("2.7.5") // Can replace this with "buildscript.dependencies.classpath".
-    id("io.spring.dependency-management").version("1.0.15.RELEASE")
 }
 
 group = "io.github.imsejin.study.springframework"
@@ -38,6 +37,7 @@ subprojects {
 
     dependencies {
         implementation("org.springframework.boot:spring-boot-starter-web")
+        implementation("org.springframework.boot:spring-boot-starter-validation")
 
         // warning: unknown enum constant When.MAYBE
         // reason: class file for javax.annotation.meta.When not found
