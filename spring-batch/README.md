@@ -128,7 +128,7 @@ corresponding `Job` is failed.
 
 ##### Implementations
 
-- TaskletStep — custom or chunk oriented
+- TaskletStep — build.gradle.custom or chunk oriented
 - FlowStep
 - JobStep
 - PartitionStep
