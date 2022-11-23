@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
-import org.springframework.core.env.Environment;
 import org.springframework.test.context.ActiveProfiles;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -26,18 +25,16 @@ class ProfileTest {
     @Test
     void profile() {
         // given
-        Environment environment = context.getEnvironment();
-        String[] activeProfiles = environment.getActiveProfiles();
-        String[] defaultProfiles = environment.getDefaultProfiles();
+        String[] activeProfiles = context.getEnvironment().getActiveProfiles();
 
         // when & then
-        assertThat(activeProfiles).anyMatch("test"::equals);
-        assertThat(defaultProfiles).anyMatch("default"::equals);
+        assertThat(activeProfiles).containsOnly("test");
 
         // then
-        assertThat(clothRepository).isNotNull();
         Cloth cloth = new Cloth();
-        assertThat(clothRepository.save(cloth)).isEqualTo(cloth);
+        assertThat(clothRepository)
+                .isNotNull()
+                .returns(cloth, it -> it.save(cloth));
     }
 
 }
