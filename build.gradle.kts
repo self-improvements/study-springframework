@@ -53,6 +53,10 @@ subprojects {
             exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
         }
     }
+
+    tasks.withType<Test> {
+        useJUnitPlatform()
+    }
 }
 
 // To solve build failure (or you can disable kotlin plugin built in IntelliJ IDEA).
@@ -66,10 +70,6 @@ subprojects {
 // This task needs to run always. When you have no .gradle.kts scripts it's doesn't do anything.
 // (ref. https://github.com/gradle/gradle/issues/14889)
 // tasks.register("prepareKotlinBuildScriptModel")
-
-tasks.withType<Test> {
-    useJUnitPlatform()
-}
 
 tasks.withType<org.springframework.boot.gradle.tasks.bundling.BootJar> {
     enabled = false
