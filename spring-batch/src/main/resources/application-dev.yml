@@ -5,7 +5,7 @@ spring:
     hikari:
       # jdbc-url: jdbc:mysql://localhost:3306/study_db?serverTimezone=Asia/Seoul
       # driver-class-name: com.mysql.cj.jdbc.Driver
-      jdbc-url: jdbc:mariadb://localhost:3306/study_db?serverTimezone=Asia/Seoul
+      jdbc-url: jdbc:mariadb://localhost:3306/study?serverTimezone=Asia/Seoul
       driver-class-name: org.mariadb.jdbc.Driver
       username: root
       password: admin1!
@@ -14,11 +14,11 @@ spring:
   batch:
     job:
 #      enabled: false
-      # If a program argument "job.name" is given, assigns to "spring.batch.job.name",
-      # or "NONE" as default. When "spring.batch.job.name" is "NONE", no batch job runs.
+      # If a program argument "job.name" is given, springframework assigns it to "spring.batch.job.name",
+      # otherwise "NONE" to that by default value. When "spring.batch.job.name" is "NONE", no batch job runs.
       names: ${job.name:NONE}
     jdbc:
       initialize-schema: never
 
   # It makes hibernate map physical table with @Table.name as it is.
-  jpa.hibernate.naming.physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+#  jpa.hibernate.naming.physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl

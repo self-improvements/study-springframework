@@ -13,7 +13,7 @@ import org.springframework.batch.item.database.builder.JpaPagingItemReaderBuilde
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import javax.persistence.EntityManagerFactory;
+//import javax.persistence.EntityManagerFactory;
 import java.util.Map;
 
 @Slf4j
@@ -31,35 +31,35 @@ public class JpaPagingItemReaderJobConfig {
 
     private final StepBuilderFactory stepBuilderFactory;
 
-    private final EntityManagerFactory entityManagerFactory;
+//    private final EntityManagerFactory entityManagerFactory;
 
-    @Bean(JOB_NAME)
-    Job job() {
-        return jobBuilderFactory.get(JOB_NAME)
-                .start(step())
-                .build();
-    }
+//    @Bean(JOB_NAME)
+//    Job job() {
+//        return jobBuilderFactory.get(JOB_NAME)
+//                .start(step())
+//                .build();
+//    }
+//
+//    @Bean(STEP_NAME)
+//    Step step() {
+//        return stepBuilderFactory.get(STEP_NAME)
+//                .<KanClassificationEntity, KanClassificationEntity>chunk(CHUNK_SIZE)
+//                .reader(jpaPagingItemReader())
+//                .writer(jpaPagingItemWriter())
+//                .build();
+//    }
 
-    @Bean(STEP_NAME)
-    Step step() {
-        return stepBuilderFactory.get(STEP_NAME)
-                .<KanClassificationEntity, KanClassificationEntity>chunk(CHUNK_SIZE)
-                .reader(jpaPagingItemReader())
-                .writer(jpaPagingItemWriter())
-                .build();
-    }
-
-    @Bean
-    JpaPagingItemReader<KanClassificationEntity> jpaPagingItemReader() {
-        return new JpaPagingItemReaderBuilder<KanClassificationEntity>()
-                .pageSize(CHUNK_SIZE)
-                .entityManagerFactory(entityManagerFactory)
-                // Must contain ORDER BY statement.
-                .queryString("SELECT k FROM KanClassificationEntity k WHERE code LIKE CONCAT(:code, '%') ORDER BY code")
-                .parameterValues(Map.of("code", "01"))
-                .name("jpa_paging_item_reader")
-                .build();
-    }
+//    @Bean
+//    JpaPagingItemReader<KanClassificationEntity> jpaPagingItemReader() {
+//        return new JpaPagingItemReaderBuilder<KanClassificationEntity>()
+//                .pageSize(CHUNK_SIZE)
+////                .entityManagerFactory(entityManagerFactory)
+//                // Must contain ORDER BY statement.
+//                .queryString("SELECT k FROM KanClassificationEntity k WHERE code LIKE CONCAT(:code, '%') ORDER BY code")
+//                .parameterValues(Map.of("code", "01"))
+//                .name("jpa_paging_item_reader")
+//                .build();
+//    }
 
     ItemWriter<KanClassificationEntity> jpaPagingItemWriter() {
         return items -> {
