@@ -36,9 +36,6 @@ subprojects {
     }
 
     dependencies {
-        implementation("org.springframework.boot:spring-boot-starter-web")
-        implementation("org.springframework.boot:spring-boot-starter-validation")
-
         // warning: unknown enum constant When.MAYBE
         // reason: class file for javax.annotation.meta.When not found
         implementation("${Dependencies.JSR305}")
@@ -50,7 +47,6 @@ subprojects {
         testCompileOnly("org.projectlombok:lombok")
         testAnnotationProcessor("org.projectlombok:lombok")
 
-        developmentOnly("org.springframework.boot:spring-boot-devtools")
         annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 
         testImplementation("org.springframework.boot:spring-boot-starter-test") {
