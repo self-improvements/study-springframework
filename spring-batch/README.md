@@ -1,6 +1,6 @@
 # Spring Batch Auto Configuration Classes
 
-If you annotate `EnableBatchProcessing`, spring application will run some configuration classes automatically.
+If you annotate `@EnableBatchProcessing`, spring application will run some configuration classes automatically.
 
 ### SimpleBatchConfiguration
 
@@ -33,7 +33,8 @@ The spring batch metadata tables match the spring batch java object respectively
 
 `JobRepository` is responsible for saving and storing each java object into its matched table.
 
-[Reference](https://docs.spring.io/spring-batch/docs/current/reference/html/schema-appendix.html#metaDataSchema)
+See more
+references [here](https://docs.spring.io/spring-batch/docs/current/reference/html/schema-appendix.html#metaDataSchema).
 
 ### Job
 
@@ -128,7 +129,7 @@ corresponding `Job` is failed.
 
 ##### Implementations
 
-- TaskletStep — build.gradle.custom or chunk oriented
+- TaskletStep — customized or chunk oriented
 - FlowStep
 - JobStep
 - PartitionStep
@@ -160,7 +161,8 @@ JSON and stored into the database as metadata for spring batch maintenance. This
 ### JobRepository
 
 This object stores all the metadata related to spring batch. All CRUD functions is invoked by this in the
-implementations of `JobLauncher`, `Job` and `Step`.
+implementations of `JobLauncher`, `Job` and `Step`. `JobBuilder` gives an implementation of `JobRepository` to
+corresponding `Job`.
 
 ##### Configuration JobRepository
 
