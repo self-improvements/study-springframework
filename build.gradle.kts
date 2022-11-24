@@ -16,6 +16,8 @@ java {
 
 tasks.withType<JavaCompile> {
     options.encoding = StandardCharsets.UTF_8.toString()
+    // Supported on Java 8 or higher.
+    options.compilerArgs.add("-parameters")
 }
 
 configurations {
