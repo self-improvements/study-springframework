@@ -1,5 +1,6 @@
 package io.github.imsejin.study.springframework.batch.job;
 
+import io.github.imsejin.study.springframework.batch.job.validator.NotEmptyJobParametersValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
@@ -13,47 +14,39 @@ import org.springframework.context.annotation.Configuration;
 @Slf4j
 @Configuration
 @RequiredArgsConstructor
-public class NextStepJobConfig {
+public class ValidatedJobConfig {
+
+    public static final String JOB_NAME = "validatedJob";
 
     private final JobBuilderFactory jobBuilderFactory;
 
     private final StepBuilderFactory stepBuilderFactory;
 
-    @Bean
-    Job nextStepJob() {
-        return jobBuilderFactory.get("nextStepJob")
-                .start(step0())
-                .next(step1())
+    @Bean(JOB_NAME)
+    Job job() {
+        return jobBuilderFactory.get(JOB_NAME)
+                .start(step1())
                 .next(step2())
-                .preventRestart()
+                .validator(new NotEmptyJobParametersValidator())
+//                .validator(new DefaultJobParametersValidator(new String[] {"version"}, new String[] {"sequence"}))
                 .build();
     }
 
-    @Bean
-    Step step0() {
-        return stepBuilderFactory.get("step0")
-                .tasklet(((contribution, chunkContext) -> {
-                    log.debug("===== Step 0: {}, {}", contribution, chunkContext);
-                    return RepeatStatus.FINISHED;
-                }))
-                .build();
-    }
-
-    @Bean
+    @Bean(JOB_NAME + "step1")
     Step step1() {
-        return stepBuilderFactory.get("step1")
+        return stepBuilderFactory.get(JOB_NAME + "step1")
                 .tasklet(((contribution, chunkContext) -> {
-                    log.debug("===== Step 1: {}, {}", contribution, chunkContext);
+                    log.info("===== Step 1: {}, {}", contribution, chunkContext);
                     return RepeatStatus.FINISHED;
                 }))
                 .build();
     }
 
-    @Bean
+    @Bean(JOB_NAME + "step2")
     Step step2() {
-        return stepBuilderFactory.get("step2")
+        return stepBuilderFactory.get(JOB_NAME + "step2")
                 .tasklet(((contribution, chunkContext) -> {
-                    log.debug("===== Step 2: {}, {}", contribution, chunkContext);
+                    log.info("===== Step 2: {}, {}", contribution, chunkContext);
                     return RepeatStatus.FINISHED;
                 }))
                 .build();

@@ -17,7 +17,7 @@ import org.springframework.context.annotation.Configuration;
 @RequiredArgsConstructor
 class FlowJob1Config {
 
-    static final String JOB_NAME = "flowJob1";
+    public static final String JOB_NAME = "flowJob1";
 
     private final JobBuilderFactory jobBuilderFactory;
 
