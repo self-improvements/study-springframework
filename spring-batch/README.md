@@ -10,7 +10,7 @@ If you annotate `@EnableBatchProcessing`, spring application will run some confi
 ### BatchConfigurerConfiguration
 
 1. BasicBatchConfigurer
-    - Instantiate target object of proxy created on SimpleBatchConfiguration.
+    - Instantiate target object of proxy created on `SimpleBatchConfiguration`.
 2. JpaBasicBatchConfigurer
     - Instantiate batch objects about JPA.
 
@@ -18,8 +18,8 @@ If you want, you can implement `BatchConfigurer` and apply it to your batch appl
 
 ### BatchAutoConfiguration
 
-- Register as bean JobLauncherApplicationRunner that executes all jobs registered as bean on startup, since it is
-  implementation of ApplicationRunner that will be executed on startup.
+- Register as bean `JobLauncherApplicationRunner` that executes all jobs registered as bean on startup, since it is an
+  implementation of `ApplicationRunner` that will be executed on startup.
 
 # Metadata Schema
 
@@ -76,7 +76,7 @@ because the spring batch doesn't allow one job to be executed with the same para
 
 ##### Creation and Binding
 
-- On startup: `java -jar batch-app.jar name=John`
+- Command: `java -jar batch-app.jar name=John`
 - Code: `JobParameterBuilder`, `DefaultJobParameterConverter`
 - SpEL: `@Value("#{jobParameter['name']}") String name`, `@JobScope`, `@StepScope`
 
@@ -92,7 +92,7 @@ These are specified in `ParameterType`.
 ##### Binding with Program Arguments
 
 Append program arguments like this `{key}={value}`.
-(Not `--{key}={value}`. This is regarded as spring environment value)
+**(Not `--{key}={value}`. This is regarded as spring environment value.)**
 
 ```bash
 java -jar batch-app.jar name="John Smith" birthDate=2022/07/01 age=45 weight=80.6
@@ -164,13 +164,13 @@ This object stores all the metadata related to spring batch. All CRUD functions 
 implementations of `JobLauncher`, `Job` and `Step`. `JobBuilder` gives an implementation of `JobRepository` to
 corresponding `Job`.
 
-##### Configuration JobRepository
+##### Configuration of JobRepository
 
-Annotating `EnableBatchProcessing` makes `JobRepository` registered as a bean. You can configure `JobRepository` with
+Annotating `@EnableBatchProcessing` makes `JobRepository` registered as a bean. You can configure `JobRepository` with
 implementing `BatchConfigurer` or extending `BasicBatchConfigurer`.
 
 - JDBC: `JobRepositoryFactoryBean`
-- In Memory: `MapJobRepositoryFactoryBean` — Not stored domain objects. (`ResourcelessTransactionManager`)
+- In Memory: `MapJobRepositoryFactoryBean` — No stored domain objects. (`ResourcelessTransactionManager`)
 
 ### JobLauncher
 
@@ -253,3 +253,57 @@ Multiple job names
 ```bash
 java -jar batch-app.jar --job.name=simpleJob,greetingJob
 ```
+
+### SimpleJob
+
+##### start(Step), next(Step)
+
+`SimpleJobBuilder` gaves one or more `Step` and then add them to `SimpleJob`. There are only two methods as above
+mentioned that are return type is `SimpleJobBuilder`.
+
+##### validator()
+
+`JobParametersValidator` checks if `JobParameters` is valid. The parameters are validated twice. One is before
+calling `TaskExecutor.execute()` and the other `JobExecutionListener.beforeJob()`.
+
+<!--
+JobLauncher -> JobParametersValidator1: validate()
+JobLauncher <- JobParametersValidator1: validate()
+JobLauncher -> TaskExecutor: execute()
+TaskExecutor -> Job: execute()
+Job -> JobParametersValidator2: validate()
+Job <- JobParametersValidator2: validate()
+Job -> JobExecutionListener: beforeJob()
+-->
+
+```text
+┌───────────┐┌──────────────────────┐┌────────────┐┌───┐┌──────────────────────┐┌────────────────────┐
+│JobLauncher││JobParametersValidator││TaskExecutor││Job││JobParametersValidator││JobExecutionListener│
+└─────┬─────┘└───────────┬──────────┘└─────┬──────┘└─┬─┘└───────────┬──────────┘└─────────┬──────────┘
+      │                  │                 │         │              │                     │           
+      │    validate()    │                 │         │              │                     │           
+      │─────────────────>│                 │         │              │                     │           
+      │                  │                 │         │              │                     │           
+      │    validate()    │                 │         │              │                     │           
+      │<─────────────────│                 │         │              │                     │           
+      │                  │                 │         │              │                     │           
+      │              execute()             │         │              │                     │           
+      │───────────────────────────────────>│         │              │                     │           
+      │                  │                 │         │              │                     │           
+      │                  │                 │execute()│              │                     │           
+      │                  │                 │────────>│              │                     │           
+      │                  │                 │         │              │                     │           
+      │                  │                 │         │  validate()  │                     │           
+      │                  │                 │         │─────────────>│                     │           
+      │                  │                 │         │              │                     │           
+      │                  │                 │         │  validate()  │                     │           
+      │                  │                 │         │<─────────────│                     │           
+      │                  │                 │         │              │                     │           
+      │                  │                 │         │             beforeJob()            │           
+      │                  │                 │         │───────────────────────────────────>│           
+┌─────┴─────┐┌───────────┴──────────┐┌─────┴──────┐┌─┴─┐┌───────────┴──────────┐┌─────────┴──────────┐
+│JobLauncher││JobParametersValidator││TaskExecutor││Job││JobParametersValidator││JobExecutionListener│
+└───────────┘└──────────────────────┘└────────────┘└───┘└──────────────────────┘└────────────────────┘
+```
+
+You can use `DefaultJobParametersValidator` as default implementation. It checks if the parameters have a required one.
