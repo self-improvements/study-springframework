@@ -1,5 +1,5 @@
 spring:
-  config.activate.on-profile: local
+  config.activate.on-profile: inmemory
   h2.console:
     enabled: true
     path: /h2-console

@@ -2,6 +2,7 @@ package io.github.imsejin.study.springframework.batch.runner;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
+import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -22,7 +23,7 @@ public class JobRunner implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        var jobParameters = new JobParametersBuilder()
+        JobParameters jobParameters = new JobParametersBuilder()
                 .addString("name", "John Smith")
                 .addDate("birthDateTime", new Date())
                 .addLong("age", 45L)
