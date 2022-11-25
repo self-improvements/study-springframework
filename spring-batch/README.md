@@ -1,4 +1,4 @@
-# Spring Batch Auto Configuration Classes
+# Spring Batch Auto Configuration Class
 
 If you annotate `@EnableBatchProcessing`, spring application will run some configuration classes automatically.
 
@@ -133,6 +133,32 @@ corresponding `Job` is failed.
 - FlowStep
 - JobStep
 - PartitionStep
+
+##### Overall Architecture
+
+<!--
+Job
+  Step
+    Tasklet
+      ChunkOrientedTasklet
+        ItemReader
+        ItemProcessor
+        ItemWriter
+      (implementation by lambda)
+  Flow
+-->
+
+```text
+Job
+ ├─Step
+ │  └─Tasklet
+ │     ├─ChunkOrientedTasklet
+ │     │  ├─ItemReader
+ │     │  ├─ItemProcessor
+ │     │  └─ItemWriter
+ │     └─(implementation by lambda)
+ └─Flow
+```
 
 ### StepExecution
 
