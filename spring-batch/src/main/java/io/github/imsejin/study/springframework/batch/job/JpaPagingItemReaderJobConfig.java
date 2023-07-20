@@ -13,7 +13,7 @@ import org.springframework.batch.item.database.builder.JpaPagingItemReaderBuilde
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-//import javax.persistence.EntityManagerFactory;
+//import jakarta.persistence.EntityManagerFactory;
 import java.util.Map;
 
 @Slf4j

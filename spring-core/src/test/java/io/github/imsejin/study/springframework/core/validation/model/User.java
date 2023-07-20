@@ -1,11 +1,10 @@
 package io.github.imsejin.study.springframework.core.validation.model;
 
+import jakarta.validation.constraints.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-
-import javax.validation.constraints.*;
 
 @Getter
 @Setter

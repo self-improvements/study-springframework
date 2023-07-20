@@ -15,7 +15,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 
 import javax.sql.DataSource;
-import java.util.Locale;
 
 @Slf4j
 @Configuration

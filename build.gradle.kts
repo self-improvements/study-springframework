@@ -1,9 +1,10 @@
 import build.gradle.custom.Dependencies
+import org.springframework.boot.gradle.tasks.bundling.BootJar
 import java.nio.charset.StandardCharsets
 
 plugins {
     id("java")
-    id("org.springframework.boot").version("2.7.5") // Can replace this with "buildscript.dependencies.classpath".
+    id("org.springframework.boot").version("3.1.1") // Can be replaced with "buildscript.dependencies.classpath".
 }
 
 group = "io.github.imsejin.study.springframework"
@@ -69,10 +70,15 @@ subprojects {
 // This task has nothing to do with the fact that your project doesn't have Kotlin sources.
 // It's about supporting the edition of .gradle.kts scripts in the IDE.
 // The fact that you have such scripts or not can't be detected upfront.
-// This task needs to run always. When you have no .gradle.kts scripts it's doesn't do anything.
+// This task needs to run always. When you have no .gradle.kts scripts it doesn't do anything.
 // (ref. https://github.com/gradle/gradle/issues/14889)
 // tasks.register("prepareKotlinBuildScriptModel")
 
-tasks.withType<org.springframework.boot.gradle.tasks.bundling.BootJar> {
+tasks.withType<BootJar> {
     enabled = false
+}
+
+tasks.withType<Wrapper> {
+    gradleVersion = "8.2.1"
+    distributionType = Wrapper.DistributionType.BIN
 }

@@ -4,13 +4,12 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.ConstructorBinding;
+import org.springframework.boot.context.properties.bind.ConstructorBinding;
 
 @Getter
 @ToString
-@ConstructorBinding
-@RequiredArgsConstructor
 @ConfigurationProperties("jwt")
+@RequiredArgsConstructor(onConstructor = @__(@ConstructorBinding))
 public class JwtProperties {
 
     private final String header;

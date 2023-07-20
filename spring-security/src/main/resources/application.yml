@@ -14,26 +14,28 @@ spring:
 
   datasource:
     hikari:
-      jdbc-url: jdbc:h2:mem:test-db
+      jdbc-url: jdbc:h2:mem:~/test-db;DB_CLOSE_DELAY=-1;MODE=MySQL;DATABASE_TO_UPPER=false;CASE_INSENSITIVE_IDENTIFIERS=false;
       driver-class-name: org.h2.Driver
       username: sa
       password:
       connection-test-query: SELECT 1
 
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
+    database: h2
     hibernate:
       ddl-auto: create-drop
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     properties:
       hibernate:
-        # show_sql: true
         format_sql: true
         use_sql_comments: true
+        globally_quoted_identifiers: true
     # This will ensure, that after Hibernate schema creation is performed then additionally schema.sql
     # is read for any additional schema changes and data.sql is executed to populate the database.
     defer-datasource-initialization: true
+    generate-ddl: true
     show-sql: true
-#    generate-ddl: true
 
 jwt:
   header: Authorization

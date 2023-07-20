@@ -3,12 +3,12 @@ package io.github.imsejin.study.springframework.core.service;
 import io.github.imsejin.study.springframework.core.config.FullyQualifiedBeanNameGenerator;
 import io.github.imsejin.study.springframework.core.model.Book;
 import io.github.imsejin.study.springframework.core.repository.BookRepository;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.time.LocalDate;
 
 @Slf4j
