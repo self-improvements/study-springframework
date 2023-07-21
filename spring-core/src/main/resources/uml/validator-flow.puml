@@ -1,0 +1,16 @@
+@startuml
+
+ValidatorImpl -> ValidatorImpl : validate
+ValidatorImpl -> ValidatorImpl : validateInContext
+ValidatorImpl -> ValidatorImpl : validateConstraintsForCurrentGroup
+ValidatorImpl -> ValidatorImpl : validateConstraintsForDefaultGroup
+ValidatorImpl -> ValidatorImpl : validateConstraintsForSingleDefaultGroupElement
+ValidatorImpl -> ValidatorImpl : validateMetaConstraint
+ValidatorImpl -> MetaConstraint : validateConstraint
+MetaConstraint -> MetaConstraint : doValidateConstraint
+MetaConstraint -> ConstraintTree : validateConstraints
+ConstraintTree -> SimpleConstraintTree : validateConstraints
+SimpleConstraintTree -> ConstraintTree : validateSingleConstraint
+ConstraintTree -> ConstraintValidator : isValid
+
+@enduml
