@@ -12,6 +12,7 @@ import org.hibernate.validator.internal.metadata.core.ConstraintHelper;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.context.ApplicationContext;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.validation.beanvalidation.SpringConstraintValidatorFactory;
 
 import java.lang.annotation.Annotation;
@@ -30,6 +31,9 @@ public class AnyOfValidator implements ConstraintValidator<AnyOf, Object> {
 
     private final ConstraintValidatorFactory factory;
 
+    /**
+     * @see LocalValidatorFactoryBean#afterPropertiesSet
+     */
     private AnyOfValidator(Validator validator, ApplicationContext context) {
         this.validator = validator;
         this.factory = new SpringConstraintValidatorFactory(context.getAutowireCapableBeanFactory());
