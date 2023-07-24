@@ -42,8 +42,10 @@ public class AnyOfValidator implements ConstraintValidator<AnyOf, Object> {
     @Override
     @SuppressWarnings({"rawtypes", "unchecked"})
     public boolean isValid(Object value, ConstraintValidatorContext context) {
+        // Gets properties of validation target object.
         BeanWrapper beanWrapper = new BeanWrapperImpl(value);
 
+        // Finds constraints on the target class.
         BeanDescriptor beanDescriptor = validator.getConstraintsForClass(value.getClass());
         Set<ConstraintDescriptor<?>> constraintDescriptors = beanDescriptor.getConstraintDescriptors();
 
@@ -51,6 +53,7 @@ public class AnyOfValidator implements ConstraintValidator<AnyOf, Object> {
         boolean valid = true;
 
         for (ConstraintDescriptor<?> constraintDescriptor : constraintDescriptors) {
+            // Supports only @AnyOf annotation.
             Annotation annotation = constraintDescriptor.getAnnotation();
             if (!(annotation instanceof AnyOf anyOf)) {
                 continue;
@@ -63,6 +66,7 @@ public class AnyOfValidator implements ConstraintValidator<AnyOf, Object> {
                 throw new IllegalStateException("@AnyOf.fieldNames must have one or more elements: " + value.getClass());
             }
 
+            // Finds all types of ConstraintValidator corresponding the constraint.
             List<? extends ConstraintValidatorDescriptor> constraintValidatorDescriptors =
                     constraintHelper.getAllValidatorDescriptors(constraint);
 
