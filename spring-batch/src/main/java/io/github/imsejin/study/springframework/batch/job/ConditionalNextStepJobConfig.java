@@ -5,24 +5,25 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
-import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
-import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.job.builder.JobBuilder;
+import org.springframework.batch.core.repository.JobRepository;
+import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.transaction.PlatformTransactionManager;
 
 @Slf4j
 @Configuration
 @RequiredArgsConstructor
 public class ConditionalNextStepJobConfig {
 
-    private final JobBuilderFactory jobBuilderFactory;
-
-    private final StepBuilderFactory stepBuilderFactory;
+    private final JobRepository jobRepository;
+    private final PlatformTransactionManager transactionManager;
 
     @Bean
     Job conditionalNextStepJob() {
-        return jobBuilderFactory.get("conditionalNextStepJob")
+        return new JobBuilder("conditionalNextStepJob", jobRepository)
                 .start(firstStep())
                 /**/.on(ExitStatus.FAILED.getExitCode()) // If firstStep failed
                 /**/.to(endStep()) // Moves to endStep
@@ -40,34 +41,34 @@ public class ConditionalNextStepJobConfig {
 
     @Bean
     Step firstStep() {
-        return stepBuilderFactory.get("firstStep")
+        return new StepBuilder("firstStep", jobRepository)
                 .tasklet(((contribution, chunkContext) -> {
                     log.debug("===== conditionalNextStepJob.firstStep");
                     // Regards this step as failed step.
                     contribution.setExitStatus(ExitStatus.FAILED);
 
                     return RepeatStatus.FINISHED;
-                }))
+                }), transactionManager)
                 .build();
     }
 
     @Bean
     Step successStep() {
-        return stepBuilderFactory.get("successStep")
+        return new StepBuilder("successStep", jobRepository)
                 .tasklet(((contribution, chunkContext) -> {
                     log.debug("===== conditionalNextStepJob.successStep");
                     return RepeatStatus.FINISHED;
-                }))
+                }), transactionManager)
                 .build();
     }
 
     @Bean
     Step endStep() {
-        return stepBuilderFactory.get("endStep")
+        return new StepBuilder("endStep", jobRepository)
                 .tasklet(((contribution, chunkContext) -> {
                     log.debug("===== conditionalNextStepJob.endStep");
                     return RepeatStatus.FINISHED;
-                }))
+                }), transactionManager)
                 .build();
     }
 

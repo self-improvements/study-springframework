@@ -4,13 +4,15 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
-import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
-import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.job.flow.FlowExecutionStatus;
 import org.springframework.batch.core.job.flow.JobExecutionDecider;
+import org.springframework.batch.core.repository.JobRepository;
+import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.transaction.PlatformTransactionManager;
 
 import java.util.Random;
 
@@ -19,13 +21,12 @@ import java.util.Random;
 @RequiredArgsConstructor
 public class DeciderJobConfig {
 
-    private final JobBuilderFactory jobBuilderFactory;
-
-    private final StepBuilderFactory stepBuilderFactory;
+    private final JobRepository jobRepository;
+    private final PlatformTransactionManager transactionManager;
 
     @Bean
     Job deciderJob() {
-        return jobBuilderFactory.get("deciderJob")
+        return new JobBuilder("deciderJob", jobRepository)
                 .start(startStep())
                 .next(decider())
                 .from(decider())
@@ -40,31 +41,31 @@ public class DeciderJobConfig {
 
     @Bean
     Step startStep() {
-        return stepBuilderFactory.get("startStep")
+        return new StepBuilder("startStep", jobRepository)
                 .tasklet(((contribution, chunkContext) -> {
                     log.debug("===== deciderJob.{}", contribution.getStepExecution().getStepName());
                     return RepeatStatus.FINISHED;
-                }))
+                }), transactionManager)
                 .build();
     }
 
     @Bean
     Step oddStep() {
-        return stepBuilderFactory.get("oddStep")
+        return new StepBuilder("oddStep", jobRepository)
                 .tasklet(((contribution, chunkContext) -> {
                     log.debug("===== deciderJob.{}", contribution.getStepExecution().getStepName());
                     return RepeatStatus.FINISHED;
-                }))
+                }), transactionManager)
                 .build();
     }
 
     @Bean
     Step evenStep() {
-        return stepBuilderFactory.get("evenStep")
+        return new StepBuilder("evenStep", jobRepository)
                 .tasklet(((contribution, chunkContext) -> {
                     log.debug("===== deciderJob.{}", contribution.getStepExecution().getStepName());
                     return RepeatStatus.FINISHED;
-                }))
+                }), transactionManager)
                 .build();
     }
 

@@ -4,11 +4,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
-import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
-import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.job.builder.JobBuilder;
+import org.springframework.batch.core.repository.JobRepository;
+import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.transaction.PlatformTransactionManager;
 
 import java.util.UUID;
 
@@ -17,13 +19,12 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ExecutionContextRestartJobConfig {
 
-    private final JobBuilderFactory jobBuilderFactory;
-
-    private final StepBuilderFactory stepBuilderFactory;
+    private final JobRepository jobRepository;
+    private final PlatformTransactionManager transactionManager;
 
     @Bean
     Job executionContextRestartJob() {
-        return jobBuilderFactory.get("executionContextRestartJob")
+        return new JobBuilder("executionContextRestartJob", jobRepository)
                 .start(executionContextRestartJob$storingStateStep())
                 .next(executionContextRestartJob$accessPreviousStepStateStep())
                 .next(executionContextRestartJob$reloadStoredStateStep())
@@ -33,7 +34,7 @@ public class ExecutionContextRestartJobConfig {
 
     @Bean
     Step executionContextRestartJob$storingStateStep() {
-        return stepBuilderFactory.get("storingStateStep")
+        return new StepBuilder("storingStateStep", jobRepository)
                 .tasklet(((contribution, chunkContext) -> {
                     var jobExecutionContext = contribution.getStepExecution().getJobExecution().getExecutionContext();
                     if (!jobExecutionContext.containsKey("jobName")) {
@@ -52,13 +53,13 @@ public class ExecutionContextRestartJobConfig {
                     log.debug("chunkContext.stepContext.stepExecution.executionContext['stepName']: {}", stepExecutionContext.get("stepName"));
 
                     return RepeatStatus.FINISHED;
-                }))
+                }), transactionManager)
                 .build();
     }
 
     @Bean
     Step executionContextRestartJob$accessPreviousStepStateStep() {
-        return stepBuilderFactory.get("accessPreviousStepStateStep")
+        return new StepBuilder("accessPreviousStepStateStep", jobRepository)
                 .tasklet(((contribution, chunkContext) -> {
                     var jobExecutionContext = chunkContext.getStepContext().getJobExecutionContext();
                     if (!jobExecutionContext.containsKey("jobName")) {
@@ -71,13 +72,13 @@ public class ExecutionContextRestartJobConfig {
                     }
 
                     return RepeatStatus.FINISHED;
-                }))
+                }), transactionManager)
                 .build();
     }
 
     @Bean
     Step executionContextRestartJob$reloadStoredStateStep() {
-        return stepBuilderFactory.get("reloadStoredStateStep")
+        return new StepBuilder("reloadStoredStateStep", jobRepository)
                 .tasklet(((contribution, chunkContext) -> {
                     var jobExecutionContext = chunkContext.getStepContext().getStepExecution().getJobExecution().getExecutionContext();
                     var jobUid = jobExecutionContext.get("uid");
@@ -96,13 +97,13 @@ public class ExecutionContextRestartJobConfig {
                     }
 
                     return RepeatStatus.FINISHED;
-                }))
+                }), transactionManager)
                 .build();
     }
 
     @Bean
     Step executionContextRestartJob$lastStep() {
-        return stepBuilderFactory.get("lastStep")
+        return new StepBuilder("lastStep", jobRepository)
                 .tasklet(((contribution, chunkContext) -> {
                     var stepExecutionContext = contribution.getStepExecution().getExecutionContext();
 
@@ -110,7 +111,7 @@ public class ExecutionContextRestartJobConfig {
                     stepExecutionContext.put("lastStep", true);
 
                     return RepeatStatus.FINISHED;
-                }))
+                }), transactionManager)
                 .build();
     }
 

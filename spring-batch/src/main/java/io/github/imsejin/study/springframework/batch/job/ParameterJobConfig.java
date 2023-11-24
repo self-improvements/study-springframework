@@ -4,13 +4,15 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
-import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.JobScope;
-import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.job.builder.JobBuilder;
+import org.springframework.batch.core.repository.JobRepository;
+import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.transaction.PlatformTransactionManager;
 
 /**
  * JobParameter vs 시스템 변수
@@ -30,13 +32,12 @@ import org.springframework.context.annotation.Configuration;
 @RequiredArgsConstructor
 public class ParameterJobConfig {
 
-    private final JobBuilderFactory jobBuilderFactory;
-
-    private final StepBuilderFactory stepBuilderFactory;
+    private final JobRepository jobRepository;
+    private final PlatformTransactionManager transactionManager;
 
     @Bean
     Job parameterJob() {
-        return jobBuilderFactory.get("parameterJob")
+        return new JobBuilder("parameterJob", jobRepository)
                 .start(jobParameterStep0(null))
                 .next(jobParameterStep1(null))
                 .next(systemPropertyStep0(null))
@@ -48,11 +49,11 @@ public class ParameterJobConfig {
     // To use job parameters, annotate @JobScope.
     @JobScope
     Step jobParameterStep0(@Value("#{jobParameters['param0']}") String param0) {
-        return stepBuilderFactory.get("jobParameterStep0")
+        return new StepBuilder("jobParameterStep0", jobRepository)
                 .tasklet(((contribution, chunkContext) -> {
                     log.info("===== jobParameterStep0: {}", param0);
                     return RepeatStatus.FINISHED;
-                }))
+                }), transactionManager)
                 .build();
     }
 
@@ -60,31 +61,31 @@ public class ParameterJobConfig {
     // To use job parameters, annotate @JobScope.
     @JobScope
     Step jobParameterStep1(@Value("#{jobParameters['param1']}") String param1) {
-        return stepBuilderFactory.get("jobParameterStep1")
+        return new StepBuilder("jobParameterStep1", jobRepository)
                 .tasklet(((contribution, chunkContext) -> {
                     log.info("===== jobParameterStep1: {}", param1);
                     return RepeatStatus.FINISHED;
-                }))
+                }), transactionManager)
                 .build();
     }
 
     @Bean
     Step systemPropertyStep0(@Value("#{systemProperties['java.version']}") String javaVersion) {
-        return stepBuilderFactory.get("systemPropertyStep0")
+        return new StepBuilder("systemPropertyStep0", jobRepository)
                 .tasklet(((contribution, chunkContext) -> {
                     log.info("===== systemPropertyStep0: {}", javaVersion);
                     return RepeatStatus.FINISHED;
-                }))
+                }), transactionManager)
                 .build();
     }
 
     @Bean
     Step systemPropertyStep1(@Value("#{environment.getProperty('java.home')}") String javaHome) {
-        return stepBuilderFactory.get("systemPropertyStep1")
+        return new StepBuilder("systemPropertyStep1", jobRepository)
                 .tasklet(((contribution, chunkContext) -> {
                     log.info("===== systemPropertyStep1: {}", javaHome);
                     return RepeatStatus.FINISHED;
-                }))
+                }), transactionManager)
                 .build();
     }
 

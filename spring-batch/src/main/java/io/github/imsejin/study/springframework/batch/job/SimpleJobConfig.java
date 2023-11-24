@@ -4,24 +4,25 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
-import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
-import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.job.builder.JobBuilder;
+import org.springframework.batch.core.repository.JobRepository;
+import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.transaction.PlatformTransactionManager;
 
 @Slf4j
 @Configuration
 @RequiredArgsConstructor
 public class SimpleJobConfig {
 
-    private final JobBuilderFactory jobBuilderFactory;
-
-    private final StepBuilderFactory stepBuilderFactory;
+    private final JobRepository jobRepository;
+    private final PlatformTransactionManager transactionManager;
 
     @Bean
     Job simpleJob() {
-        return jobBuilderFactory.get("simpleJob")
+        return new JobBuilder("simpleJob", jobRepository)
                 .start(simpleStep0())
                 .next(simpleStep1())
                 .build();
@@ -29,7 +30,7 @@ public class SimpleJobConfig {
 
     @Bean
     Step simpleStep0() {
-        return stepBuilderFactory.get("simpleStep0")
+        return new StepBuilder("simpleStep0", jobRepository)
                 .tasklet(((contribution, chunkContext) -> {
                     log.info("===== Step 1: {}, {}", contribution, chunkContext);
 
@@ -50,17 +51,17 @@ public class SimpleJobConfig {
                     }
 
                     return RepeatStatus.FINISHED;
-                }))
+                }), transactionManager)
                 .build();
     }
 
     @Bean
     Step simpleStep1() {
-        return stepBuilderFactory.get("simpleStep1")
+        return new StepBuilder("simpleStep1", jobRepository)
                 .tasklet(((contribution, chunkContext) -> {
                     log.info("===== Step 2: {}, {}", contribution, chunkContext);
                     return RepeatStatus.FINISHED;
-                }))
+                }), transactionManager)
                 .build();
     }
 

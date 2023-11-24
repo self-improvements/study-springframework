@@ -5,8 +5,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
-import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
-import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.job.builder.JobBuilder;
+import org.springframework.batch.core.repository.JobRepository;
+import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.database.JdbcPagingItemReader;
 import org.springframework.batch.item.database.Order;
@@ -16,6 +17,7 @@ import org.springframework.batch.item.database.support.SqlPagingQueryProviderFac
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
 import java.util.Map;
@@ -31,23 +33,22 @@ public class JdbcPagingItemReaderJobConfig {
 
     private static final String STEP_NAME = "jdbc_paging_item_reader_step";
 
-    private final JobBuilderFactory jobBuilderFactory;
-
-    private final StepBuilderFactory stepBuilderFactory;
+    private final JobRepository jobRepository;
+    private final PlatformTransactionManager transactionManager;
 
     private final DataSource dataSource;
 
     @Bean(JOB_NAME)
     Job job() {
-        return jobBuilderFactory.get(JOB_NAME)
+        return new JobBuilder(JOB_NAME, jobRepository)
                 .start(step())
                 .build();
     }
 
     @Bean(STEP_NAME)
     Step step() {
-        return stepBuilderFactory.get(STEP_NAME)
-                .<KanClassification, KanClassification>chunk(CHUNK_SIZE)
+        return new StepBuilder(STEP_NAME, jobRepository)
+                .<KanClassification, KanClassification>chunk(CHUNK_SIZE, transactionManager)
                 .reader(jdbcPagingItemReader())
                 .writer(jdbcPagingItemWriter())
                 .build();
