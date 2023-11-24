@@ -1,8 +1,7 @@
 package io.github.imsejin.study.springframework.batch.job;
 
-import io.github.imsejin.study.springframework.batch.domain.KanClassification;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import javax.sql.DataSource;
+
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.job.builder.JobBuilder;
@@ -16,7 +15,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.transaction.PlatformTransactionManager;
 
-import javax.sql.DataSource;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+import io.github.imsejin.study.springframework.batch.domain.KanClassification;
 
 @Slf4j
 @Configuration
@@ -24,14 +26,11 @@ import javax.sql.DataSource;
 public class JdbcCursorItemReaderJobConfig {
 
     private static final int CHUNK_SIZE = 100;
-
     private static final String JOB_NAME = "jdbc_cursor_item_reader_job";
-
     private static final String STEP_NAME = "jdbc_cursor_item_reader_step";
 
     private final JobRepository jobRepository;
     private final PlatformTransactionManager transactionManager;
-
     private final DataSource dataSource;
 
     @Bean(JOB_NAME)

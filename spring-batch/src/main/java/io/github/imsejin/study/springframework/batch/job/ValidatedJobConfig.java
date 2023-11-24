@@ -1,8 +1,5 @@
 package io.github.imsejin.study.springframework.batch.job;
 
-import io.github.imsejin.study.springframework.batch.job.validator.NotEmptyJobParametersValidator;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.job.builder.JobBuilder;
@@ -12,6 +9,11 @@ import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+import io.github.imsejin.study.springframework.batch.job.validator.NotEmptyJobParametersValidator;
 
 @Slf4j
 @Configuration
@@ -29,7 +31,7 @@ public class ValidatedJobConfig {
                 .start(step1())
                 .next(step2())
                 .validator(new NotEmptyJobParametersValidator())
-//                .validator(new DefaultJobParametersValidator(new String[] {"version"}, new String[] {"sequence"}))
+                //                .validator(new DefaultJobParametersValidator(new String[] {"version"}, new String[] {"sequence"}))
                 .build();
     }
 

@@ -1,8 +1,9 @@
 package io.github.imsejin.study.springframework.batch.job;
 
-import io.github.imsejin.study.springframework.batch.domain.KanClassification;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import java.util.Map;
+
+import javax.sql.DataSource;
+
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.job.builder.JobBuilder;
@@ -19,8 +20,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.transaction.PlatformTransactionManager;
 
-import javax.sql.DataSource;
-import java.util.Map;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+import io.github.imsejin.study.springframework.batch.domain.KanClassification;
 
 @Slf4j
 @Configuration
@@ -28,14 +31,11 @@ import java.util.Map;
 public class JdbcPagingItemReaderJobConfig {
 
     private static final int CHUNK_SIZE = 100;
-
     private static final String JOB_NAME = "jdbc_paging_item_reader_job";
-
     private static final String STEP_NAME = "jdbc_paging_item_reader_step";
 
     private final JobRepository jobRepository;
     private final PlatformTransactionManager transactionManager;
-
     private final DataSource dataSource;
 
     @Bean(JOB_NAME)
@@ -62,7 +62,7 @@ public class JdbcPagingItemReaderJobConfig {
                 .dataSource(dataSource)
                 .rowMapper(new BeanPropertyRowMapper<>(KanClassification.class))
                 .queryProvider(successfulQueryProvider())
-//                .queryProvider(failedQueryProvider())
+                //                .queryProvider(failedQueryProvider())
                 .parameterValues(Map.of("code", "01"))
                 .name("jdbc_paging_item_reader")
                 .build();
@@ -138,7 +138,7 @@ public class JdbcPagingItemReaderJobConfig {
                 AND KAN_CODE LIKE CONCAT(:code, '%')
                 """);
         factoryBean.setSortKeys(Map.of("KAN_CODE", Order.ASCENDING));
-//        factoryBean.setSortKeys(Map.of("code", Order.ASCENDING));
+        //        factoryBean.setSortKeys(Map.of("code", Order.ASCENDING));
 
         try {
             return factoryBean.getObject();

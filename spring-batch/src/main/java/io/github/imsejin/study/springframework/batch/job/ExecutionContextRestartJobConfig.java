@@ -1,7 +1,7 @@
 package io.github.imsejin.study.springframework.batch.job;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import java.util.UUID;
+
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.job.builder.JobBuilder;
@@ -12,7 +12,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
 
-import java.util.UUID;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Configuration
@@ -42,7 +43,8 @@ public class ExecutionContextRestartJobConfig {
                         jobExecutionContext.put("jobName", jobName);
                     }
 
-                    log.debug("contribution.stepExecution.jobExecution.executionContext['jobName']: {}", jobExecutionContext.get("jobName"));
+                    log.debug("contribution.stepExecution.jobExecution.executionContext['jobName']: {}",
+                            jobExecutionContext.get("jobName"));
 
                     var stepExecutionContext = chunkContext.getStepContext().getStepExecution().getExecutionContext();
                     if (!stepExecutionContext.containsKey("stepName")) {
@@ -50,7 +52,8 @@ public class ExecutionContextRestartJobConfig {
                         stepExecutionContext.put("stepName", stepName);
                     }
 
-                    log.debug("chunkContext.stepContext.stepExecution.executionContext['stepName']: {}", stepExecutionContext.get("stepName"));
+                    log.debug("chunkContext.stepContext.stepExecution.executionContext['stepName']: {}",
+                            stepExecutionContext.get("stepName"));
 
                     return RepeatStatus.FINISHED;
                 }), transactionManager)
@@ -80,7 +83,10 @@ public class ExecutionContextRestartJobConfig {
     Step executionContextRestartJob$reloadStoredStateStep() {
         return new StepBuilder("reloadStoredStateStep", jobRepository)
                 .tasklet(((contribution, chunkContext) -> {
-                    var jobExecutionContext = chunkContext.getStepContext().getStepExecution().getJobExecution().getExecutionContext();
+                    var jobExecutionContext = chunkContext.getStepContext()
+                            .getStepExecution()
+                            .getJobExecution()
+                            .getExecutionContext();
                     var jobUid = jobExecutionContext.get("uid");
 
                     if (jobUid == null) {
