@@ -33,8 +33,7 @@ The spring batch metadata tables match the spring batch java object respectively
 
 `JobRepository` is responsible for saving and storing each java object into its matched table.
 
-See more
-references [here](https://docs.spring.io/spring-batch/docs/current/reference/html/schema-appendix.html#metaDataSchema).
+See more references [here](https://docs.spring.io/spring-batch/reference/schema-appendix.html).
 
 ### Job
 
