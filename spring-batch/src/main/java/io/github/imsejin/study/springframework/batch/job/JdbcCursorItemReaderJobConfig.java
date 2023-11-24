@@ -83,7 +83,7 @@ public class JdbcCursorItemReaderJobConfig {
 
     ItemWriter<KanClassification> writer() {
         return items -> {
-            for (var item : items) {
+            for (KanClassification item : items) {
                 log.debug(">>>>> item: {}", item);
             }
         };

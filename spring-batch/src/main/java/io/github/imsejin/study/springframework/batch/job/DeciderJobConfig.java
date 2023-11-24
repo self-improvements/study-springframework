@@ -73,13 +73,13 @@ public class DeciderJobConfig {
     @Bean
     JobExecutionDecider decider() {
         return (jobExecution, stepExecution) -> {
-            var random = new Random();
+            Random random = new Random();
 
-            var n = random.nextInt(100) + 1;
+            int n = random.nextInt(100) + 1;
 
             log.debug("===== Random number: {}", n);
 
-            var status = (n & 1) == 1 ? "ODD" : "EVEN";
+            String status = (n & 1) == 1 ? "ODD" : "EVEN";
             return new FlowExecutionStatus(status);
         };
     }

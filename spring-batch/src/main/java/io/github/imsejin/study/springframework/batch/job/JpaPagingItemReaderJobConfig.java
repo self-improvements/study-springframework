@@ -53,7 +53,7 @@ public class JpaPagingItemReaderJobConfig {
 
     ItemWriter<KanClassificationEntity> jpaPagingItemWriter() {
         return items -> {
-            for (var item : items) {
+            for (KanClassificationEntity item : items) {
                 log.debug(">>>>> item: {}", item);
             }
         };

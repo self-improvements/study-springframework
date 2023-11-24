@@ -1,6 +1,10 @@
 package io.github.imsejin.study.springframework.batch.job;
 
+import java.util.Map;
+
 import org.springframework.batch.core.Job;
+import org.springframework.batch.core.JobParameter;
+import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.repository.JobRepository;
@@ -36,9 +40,9 @@ public class SimpleJobConfig {
                     log.info("===== Step 1: {}, {}", contribution, chunkContext);
 
                     // contribution.stepExecution.jobExecution.jobParameters
-                    var jobParameters = contribution.getStepExecution().getJobExecution().getJobParameters();
-                    for (var entry : jobParameters.getParameters().entrySet()) {
-                        var jobParameter = entry.getValue();
+                    JobParameters jobParameters = contribution.getStepExecution().getJobExecution().getJobParameters();
+                    for (Map.Entry<String, JobParameter<?>> entry : jobParameters.getParameters().entrySet()) {
+                        JobParameter<?> jobParameter = entry.getValue();
                         System.out.printf("contribution.stepExecution.jobExecution.jobParameters['%s']: %s(%s, %s)%n",
                                 entry.getKey(),
                                 jobParameter.getClass().getSimpleName(),
@@ -47,9 +51,9 @@ public class SimpleJobConfig {
                     }
 
                     // chunkContext.stepContext.jobParameters
-                    var jobParamMap = chunkContext.getStepContext().getJobParameters();
-                    for (var entry : jobParamMap.entrySet()) {
-                        var jobParamValue = entry.getValue();
+                    Map<String, Object> jobParamMap = chunkContext.getStepContext().getJobParameters();
+                    for (Map.Entry<String, Object> entry : jobParamMap.entrySet()) {
+                        Object jobParamValue = entry.getValue();
                         System.out.printf("chunkContext.stepContext.jobParameters['%s']: %s(%s)%n",
                                 entry.getKey(), jobParamValue.getClass().getSimpleName(), jobParamValue);
                     }

@@ -1,5 +1,6 @@
 package io.github.imsejin.study.springframework.batch.job;
 
+import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.batch.core.Job;
@@ -7,6 +8,7 @@ import org.springframework.batch.core.Step;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
+import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -37,18 +39,25 @@ public class ExecutionContextRestartJobConfig {
     Step executionContextRestartJob$storingStateStep() {
         return new StepBuilder("storingStateStep", jobRepository)
                 .tasklet(((contribution, chunkContext) -> {
-                    var jobExecutionContext = contribution.getStepExecution().getJobExecution().getExecutionContext();
+                    ExecutionContext jobExecutionContext = contribution.getStepExecution()
+                            .getJobExecution()
+                            .getExecutionContext();
                     if (!jobExecutionContext.containsKey("jobName")) {
-                        var jobName = contribution.getStepExecution().getJobExecution().getJobInstance().getJobName();
+                        String jobName = contribution.getStepExecution()
+                                .getJobExecution()
+                                .getJobInstance()
+                                .getJobName();
                         jobExecutionContext.put("jobName", jobName);
                     }
 
                     log.debug("contribution.stepExecution.jobExecution.executionContext['jobName']: {}",
                             jobExecutionContext.get("jobName"));
 
-                    var stepExecutionContext = chunkContext.getStepContext().getStepExecution().getExecutionContext();
+                    ExecutionContext stepExecutionContext = chunkContext.getStepContext()
+                            .getStepExecution()
+                            .getExecutionContext();
                     if (!stepExecutionContext.containsKey("stepName")) {
-                        var stepName = chunkContext.getStepContext().getStepExecution().getStepName();
+                        String stepName = chunkContext.getStepContext().getStepExecution().getStepName();
                         stepExecutionContext.put("stepName", stepName);
                     }
 
@@ -64,12 +73,14 @@ public class ExecutionContextRestartJobConfig {
     Step executionContextRestartJob$accessPreviousStepStateStep() {
         return new StepBuilder("accessPreviousStepStateStep", jobRepository)
                 .tasklet(((contribution, chunkContext) -> {
-                    var jobExecutionContext = chunkContext.getStepContext().getJobExecutionContext();
+                    Map<String, Object> jobExecutionContext = chunkContext.getStepContext().getJobExecutionContext();
                     if (!jobExecutionContext.containsKey("jobName")) {
                         throw new IllegalStateException("NEVER THROW");
                     }
 
-                    var stepExecutionContext = chunkContext.getStepContext().getStepExecution().getExecutionContext();
+                    ExecutionContext stepExecutionContext = chunkContext.getStepContext()
+                            .getStepExecution()
+                            .getExecutionContext();
                     if (stepExecutionContext.containsKey("stepName")) {
                         throw new IllegalStateException("NEVER THROW");
                     }
@@ -83,19 +94,19 @@ public class ExecutionContextRestartJobConfig {
     Step executionContextRestartJob$reloadStoredStateStep() {
         return new StepBuilder("reloadStoredStateStep", jobRepository)
                 .tasklet(((contribution, chunkContext) -> {
-                    var jobExecutionContext = chunkContext.getStepContext()
+                    ExecutionContext jobExecutionContext = chunkContext.getStepContext()
                             .getStepExecution()
                             .getJobExecution()
                             .getExecutionContext();
-                    var jobUid = jobExecutionContext.get("uid");
+                    Object jobUid = jobExecutionContext.get("uid");
 
                     if (jobUid == null) {
                         jobExecutionContext.put("uid", UUID.randomUUID());
                         throw new IllegalStateException("ONCE THROW: Not found jobUid");
                     }
 
-                    var stepExecutionContext = contribution.getStepExecution().getExecutionContext();
-                    var stepUid = stepExecutionContext.get("uid");
+                    ExecutionContext stepExecutionContext = contribution.getStepExecution().getExecutionContext();
+                    Object stepUid = stepExecutionContext.get("uid");
 
                     if (stepUid == null) {
                         stepExecutionContext.put("uid", UUID.randomUUID());
@@ -111,7 +122,7 @@ public class ExecutionContextRestartJobConfig {
     Step executionContextRestartJob$lastStep() {
         return new StepBuilder("lastStep", jobRepository)
                 .tasklet(((contribution, chunkContext) -> {
-                    var stepExecutionContext = contribution.getStepExecution().getExecutionContext();
+                    ExecutionContext stepExecutionContext = contribution.getStepExecution().getExecutionContext();
 
                     // State is stored into the database though this step will be succeeded.
                     stepExecutionContext.put("lastStep", true);

@@ -70,7 +70,7 @@ public class JdbcPagingItemReaderJobConfig {
 
     ItemWriter<KanClassification> jdbcPagingItemWriter() {
         return items -> {
-            for (var item : items) {
+            for (KanClassification item : items) {
                 log.debug(">>>>> item: {}", item);
             }
         };
@@ -78,7 +78,7 @@ public class JdbcPagingItemReaderJobConfig {
 
     @Bean
     PagingQueryProvider successfulQueryProvider() {
-        var factoryBean = new SqlPagingQueryProviderFactoryBean();
+        SqlPagingQueryProviderFactoryBean factoryBean = new SqlPagingQueryProviderFactoryBean();
         factoryBean.setDataSource(dataSource);
         factoryBean.setSelectClause("""
                 SELECT T.code
@@ -121,7 +121,7 @@ public class JdbcPagingItemReaderJobConfig {
      */
     @Bean
     PagingQueryProvider failedQueryProvider() {
-        var factoryBean = new SqlPagingQueryProviderFactoryBean();
+        SqlPagingQueryProviderFactoryBean factoryBean = new SqlPagingQueryProviderFactoryBean();
         factoryBean.setDataSource(dataSource);
         factoryBean.setSelectClause("""
                 SELECT KAN_CODE AS code

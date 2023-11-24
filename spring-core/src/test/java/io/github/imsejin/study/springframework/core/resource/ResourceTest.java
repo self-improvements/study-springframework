@@ -1,6 +1,7 @@
 package io.github.imsejin.study.springframework.core.resource;
 
-import lombok.extern.slf4j.Slf4j;
+import java.net.URL;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -8,14 +9,19 @@ import org.springframework.boot.web.servlet.context.ServletWebServerApplicationC
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
-import org.springframework.core.io.*;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.FileUrlResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.core.io.UrlResource;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.GenericWebApplicationContext;
 import org.springframework.web.context.support.ServletContextResource;
 
-import java.net.URL;
+import lombok.extern.slf4j.Slf4j;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 @Slf4j
 @SpringBootTest
@@ -72,10 +78,10 @@ class ResourceTest {
     @Test
     void test() {
         // given
-        var ac1 = new GenericWebApplicationContext();
-        var ac2 = new ClassPathXmlApplicationContext();
-        var ac3 = new FileSystemXmlApplicationContext();
-        var ac4 = new ServletWebServerApplicationContext();
+        ResourceLoader ac1 = new GenericWebApplicationContext();
+        ResourceLoader ac2 = new ClassPathXmlApplicationContext();
+        ResourceLoader ac3 = new FileSystemXmlApplicationContext();
+        ResourceLoader ac4 = new ServletWebServerApplicationContext();
 
         // when
         Resource r1 = ac1.getResource("https://jsonplaceholder.typicode.com/posts");
