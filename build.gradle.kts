@@ -4,7 +4,7 @@ import java.nio.charset.StandardCharsets
 
 plugins {
     id("java")
-    id("org.springframework.boot").version("3.1.1") // Can be replaced with "buildscript.dependencies.classpath".
+    id("org.springframework.boot").version("3.1.6") // Can be replaced with "buildscript.dependencies.classpath".
 }
 
 group = "io.github.imsejin.study.springframework"
