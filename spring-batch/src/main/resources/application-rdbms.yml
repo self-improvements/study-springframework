@@ -16,7 +16,7 @@ spring:
       enabled: true
       # If a program argument "job.name" is given, springframework assigns it to "spring.batch.job.name",
       # otherwise "NONE" to that by default value. When "spring.batch.job.name" is "NONE", no batch job runs.
-      names: ${job.name:NONE}
+      name: ${job.name:NONE}
     jdbc:
       initialize-schema: never
 

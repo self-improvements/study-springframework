@@ -1,3 +1,10 @@
+Breaking Changes 
+
+* https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-3.0-Migration-Guide#spring-batch-changes
+* https://github.com/spring-projects/spring-batch/wiki/Spring-Batch-5.0-Migration-Guide
+
+---
+
 # Spring Batch Auto Configuration Class
 
 If you annotate `@EnableBatchProcessing`, spring application will run some configuration classes automatically.
