@@ -1,7 +1,6 @@
 package io.github.imsejin.study.springframework.batch.job;
 
 import org.springframework.batch.core.Job;
-import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.repository.JobRepository;
@@ -14,14 +13,14 @@ import org.springframework.transaction.PlatformTransactionManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import io.github.imsejin.study.springframework.batch.job.validator.NotEmptyJobParametersValidator;
+import io.github.imsejin.study.springframework.batch.job.incrementer.TimestampIncrementer;
 
 @Slf4j
 @Configuration
 @RequiredArgsConstructor
-public class ValidatedJobConfig {
+public class IncrementedJobConfig {
 
-    public static final String JOB_NAME = "validatedJob";
+    public static final String JOB_NAME = "incrementedJob";
 
     private final JobRepository jobRepository;
     private final PlatformTransactionManager transactionManager;
@@ -30,10 +29,7 @@ public class ValidatedJobConfig {
     Job job() {
         return new JobBuilder(JOB_NAME, jobRepository)
                 .start(step1())
-                .next(step2())
-                .validator(new NotEmptyJobParametersValidator())
-                .validator(this::validate)
-                //                .validator(new DefaultJobParametersValidator(new String[] {"version"}, new String[] {"sequence"}))
+                .incrementer(new TimestampIncrementer())
                 .build();
     }
 
@@ -45,19 +41,6 @@ public class ValidatedJobConfig {
                     return RepeatStatus.FINISHED;
                 }), transactionManager)
                 .build();
-    }
-
-    @Bean(JOB_NAME + "step2")
-    Step step2() {
-        return new StepBuilder(JOB_NAME + "step2", jobRepository)
-                .tasklet(((contribution, chunkContext) -> {
-                    log.info("===== Step 2: {}, {}", contribution, chunkContext);
-                    return RepeatStatus.FINISHED;
-                }), transactionManager)
-                .build();
-    }
-
-    private void validate(JobParameters parameters) {
     }
 
 }
